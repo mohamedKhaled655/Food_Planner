@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/login_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="18dp"
+    >
+
+
+    <ImageView
+        android:id="@+id/img_login_image"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@drawable/f3" />
+    <TextView
+        android:id="@+id/txt_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/img_login_image"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:text="@string/welcome_back"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_login_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/txt_welcome"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="13sp"
+        android:text="@string/txt_login_body" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_user_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_login_body"
+        android:layout_alignParentStart="true"
+
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="9dp"
+        app:boxBackgroundColor="#14AAAAAA"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#14AAAAAA"
+
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_user_login"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:drawableStart="@drawable/person"
+            android:drawablePadding="8dp"
+
+            android:hint="@string/username_email"
+            android:inputType="textEmailAddress"
+
+            android:padding="8dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_password_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/til_user_login"
+        android:layout_alignParentStart="true"
+
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="9dp"
+        app:boxBackgroundColor="#14AAAAAA"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#14AAAAAA"
+
+        app:endIconMode="password_toggle"
+        app:endIconDrawable="@drawable/pass"
+
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_password_login"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:drawableStart="@drawable/lock"
+            android:drawablePadding="8dp"
+
+            android:hint="@string/password"
+            android:inputType="textPassword"
+
+            android:padding="8dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/txt_forgot_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/til_password_login"
+        android:layout_marginTop="8dp"
+        android:text="@string/forgot_password"
+        android:textSize="15sp"
+        android:textColor="@android:color/white"
+        />
+
+    <TextView
+        android:id="@+id/txt_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/til_password_login"
+        android:text="@string/sign_up"
+        android:layout_marginTop="8dp"
+        android:textSize="14sp"
+        android:textColor="#2D2626"
+        />
+
+    <Button
+        android:id="@+id/btn_login_toHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_forgot_password"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:backgroundTint="#DFB497"
+        android:text="@string/login" />
+
+</RelativeLayout>
