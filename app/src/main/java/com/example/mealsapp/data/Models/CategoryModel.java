@@ -1,4 +1,4 @@
-package com.example.mealsapp.Models;
+package com.example.mealsapp.data.Models;
 
 public class CategoryModel {
     private String idCategory;

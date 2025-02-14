@@ -1,4 +1,4 @@
-package com.example.mealsapp;
+package com.example.mealsapp.home_fragment.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.mealsapp.Models.CategoryModel;
+import com.example.mealsapp.R;
+import com.example.mealsapp.data.Models.CategoryModel;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(context).inflate(R.layout.catorgoy_list,parent,false);
+        View view= LayoutInflater.from(context).inflate(R.layout.category_item,parent,false);
 
         return new CategoryViewHolder(view);
 
@@ -37,11 +38,24 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         CategoryModel categoryModel=categoryModelList.get(position);
         holder.txtCatTitle.setText(categoryModel.getStrCategory());
-        holder.txtCatId.setText(categoryModel.getIdCategory());
-        holder.txtCatDesc.setText(categoryModel.getStrCategoryDescription());
+
         final String imgUrl=categoryModel.getStrCategoryThumb();
-        Glide.with(context).load(imgUrl).circleCrop().into(holder.catImage);
+        //Glide.with(context).load(imgUrl).circleCrop().into(holder.catImage);
+        Glide.with(context)
+                .load(imgUrl)
+                .placeholder(R.drawable.lock)
+                .error(R.drawable.lock)
+                .circleCrop()
+                .into(holder.catImage);
     }
+    public void setCategories(List<CategoryModel> categoryModels) {
+        this.categoryModelList.clear();
+        this.categoryModelList.addAll(categoryModels);
+        notifyDataSetChanged();
+    }
+
+
+
 
     @Override
     public int getItemCount() {
@@ -53,10 +67,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         ImageView catImage;
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtCatTitle=itemView.findViewById(R.id.txt_catTitle);
-            txtCatId=itemView.findViewById(R.id.txt_id);
-            txtCatDesc=itemView.findViewById(R.id.txt_desc);
-            catImage=itemView.findViewById(R.id.img_catImage);
+            txtCatTitle=itemView.findViewById(R.id.cat_title);
+           // txtCatId=itemView.findViewById(R.id.txt_id);
+            //txtCatDesc=itemView.findViewById(R.id.txt_desc);
+            catImage=itemView.findViewById(R.id.img_category);
 
         }
     }

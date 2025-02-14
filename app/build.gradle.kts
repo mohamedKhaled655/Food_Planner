@@ -58,4 +58,8 @@ dependencies {
     implementation (libs.navigation.fragment)
     implementation (libs.androidx.navigation.ui)
 
+    //Room
+    implementation ("androidx.room:room-runtime:2.6.1")
+    annotationProcessor ("androidx.room:room-compiler:2.6.1")
+
 }

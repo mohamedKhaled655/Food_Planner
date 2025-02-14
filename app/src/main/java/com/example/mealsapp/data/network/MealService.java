@@ -1,7 +1,7 @@
-package com.example.mealsapp;
+package com.example.mealsapp.data.network;
 
-import com.example.mealsapp.Models.CategoryResponse;
-import com.example.mealsapp.Models.MealResponse;
+import com.example.mealsapp.data.Models.CategoryResponse;
+import com.example.mealsapp.data.Models.MealResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

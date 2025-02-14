@@ -60,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.mealsapp.HomeFragment"
+        android:name="com.example.mealsapp.home_fragment.view.HomeFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_home">
         <action
@@ -69,7 +69,10 @@
         <argument
             android:name="userModel"
             app:nullable="false"
-            app:argType="com.example.mealsapp.Models.UserModel" />
+            app:argType="com.example.mealsapp.data.Models.UserModel" />
+        <action
+            android:id="@+id/action_homeFragment_to_favouritesFragment"
+            app:destination="@id/favouritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/mealDetailsFragment"
@@ -78,6 +81,11 @@
         tools:layout="@layout/fragment_meal_details" >
         <argument
             android:name="mealInfo"
-            app:argType="com.example.mealsapp.Models.MealModel" />
+            app:argType="com.example.mealsapp.data.Models.MealModel" />
     </fragment>
+    <fragment
+        android:id="@+id/favouritesFragment"
+        android:name="com.example.mealsapp.FavouritesFragment"
+        android:label="fragment_favourites"
+        tools:layout="@layout/fragment_favourites" />
 </navigation>

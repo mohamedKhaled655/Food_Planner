@@ -1,4 +1,4 @@
-package com.example.mealsapp.Models;
+package com.example.mealsapp.data.Models;
 
 import java.util.ArrayList;
 import java.util.List;
