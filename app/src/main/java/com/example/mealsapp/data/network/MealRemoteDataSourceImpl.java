@@ -2,7 +2,10 @@ package com.example.mealsapp.data.network;
 
 import android.util.Log;
 
+import com.example.mealsapp.data.Models.AreaResponse;
 import com.example.mealsapp.data.Models.CategoryResponse;
+import com.example.mealsapp.data.Models.CategorySearchResponse;
+import com.example.mealsapp.data.Models.IngredientResponse;
 import com.example.mealsapp.data.Models.MealResponse;
 
 import retrofit2.Call;
@@ -75,6 +78,77 @@ public class MealRemoteDataSourceImpl implements MealRemoteDataSource {
                 Log.i(TAG, "onFailure: callback");
                 networkCallback.onFailureResultForCategory(throwable.getMessage());
                 throwable.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void makeNetworkCallForArea(NetworkCallNBackForArea networkCallNBackForArea) {
+        Call<AreaResponse>call= mealService.getAreasForSearch();
+        call.enqueue(new Callback<AreaResponse>() {
+            @Override
+            public void onResponse(Call<AreaResponse> call, Response<AreaResponse> response) {
+                if (response.isSuccessful())
+                {
+                    networkCallNBackForArea.onSuccessForAreaResult(response.body().getAreaModels());
+                    Log.i(TAG, "onResponse: "+response.body().getAreaModels());
+                }else{
+                    networkCallNBackForArea.onFailureForAreaResult(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AreaResponse> call, Throwable throwable) {
+                Log.i(TAG, "onFailure: call/back");
+                networkCallNBackForArea.onFailureForAreaResult(throwable.getMessage());
+                throwable.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void makeNetworkCallForCategorySearch(NetworkCallNBackForSearchCategory networkCallNBackForSearchCategory) {
+        Call<CategorySearchResponse>call= mealService.getCategoryForSearch();
+        call.enqueue(new Callback<CategorySearchResponse>() {
+            @Override
+            public void onResponse(Call<CategorySearchResponse> call, Response<CategorySearchResponse> response) {
+                if(response.isSuccessful()){
+                    networkCallNBackForSearchCategory.onSuccessForCategorySearchResult(response.body().getCategorySearchModels());
+                    Log.i(TAG, "onResponse:makeNetworkCallForCategorySearch :  "+response.body().getCategorySearchModels());
+                }else{
+                    Log.i(TAG, "onResponse:makeNetworkCallForCategorySearch :"+response.message());
+                    networkCallNBackForSearchCategory.onFailureForCategorySearchResult(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategorySearchResponse> call, Throwable throwable) {
+                Log.i(TAG, "onFailure: call category search");
+                networkCallNBackForSearchCategory.onFailureForCategorySearchResult(throwable.getMessage());
+                throwable.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void makeNetworkCallForIngredientSearch(NetworkCallNBackForIngredient networkCallNBackForIngredient) {
+        Call<IngredientResponse>call= mealService.getIngredientsForSearch();
+        call.enqueue(new Callback<IngredientResponse>() {
+            @Override
+            public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
+                if(response.isSuccessful()){
+                    networkCallNBackForIngredient.onSuccessForIngredientResult(response.body().getIngredientModels());
+                    Log.i(TAG, "onResponse: "+response.body().getIngredientModels());
+                }else{
+                    networkCallNBackForIngredient.onFailureForIngredientResult(response.message());
+                    Log.i(TAG, "onResponse error: ");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<IngredientResponse> call, Throwable throwable) {
+                Log.i(TAG, "onFailure: networkCallNBackForIngredient");
+                networkCallNBackForIngredient.onFailureForIngredientResult(throwable.getMessage());
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.example.mealsapp;
+package com.example.mealsapp.favourite_fragment.view;
 
 import android.os.Bundle;
 
@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mealsapp.R;
 import com.example.mealsapp.data.local.MealEntity;
 import com.example.mealsapp.data.local.MealLocalDataSourceImpl;
 import com.example.mealsapp.data.network.MealRemoteDataSourceImpl;
@@ -21,9 +22,6 @@ import com.example.mealsapp.data.repo.MealRepository;
 import com.example.mealsapp.data.repo.MealRepositoryImpl;
 import com.example.mealsapp.favourite_fragment.presenter.FavMealPresenter;
 import com.example.mealsapp.favourite_fragment.presenter.FavMealPresenterImpl;
-import com.example.mealsapp.favourite_fragment.view.FavoriteMealView;
-import com.example.mealsapp.favourite_fragment.view.FavouriteAdapter;
-import com.example.mealsapp.favourite_fragment.view.OnRemoveFavClickListener;
 
 import java.util.ArrayList;
 import java.util.List;

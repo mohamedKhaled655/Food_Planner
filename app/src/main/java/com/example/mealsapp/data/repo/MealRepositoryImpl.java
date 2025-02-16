@@ -6,6 +6,9 @@ import com.example.mealsapp.data.local.MealEntity;
 import com.example.mealsapp.data.local.MealLocalDataSource;
 import com.example.mealsapp.data.network.MealRemoteDataSource;
 import com.example.mealsapp.data.network.NetworkCallBackForCategory;
+import com.example.mealsapp.data.network.NetworkCallNBackForArea;
+import com.example.mealsapp.data.network.NetworkCallNBackForIngredient;
+import com.example.mealsapp.data.network.NetworkCallNBackForSearchCategory;
 import com.example.mealsapp.data.network.NetworkCallback;
 
 import java.util.List;
@@ -39,6 +42,21 @@ public class MealRepositoryImpl implements MealRepository{
     @Override
     public void getCategoryMeals(NetworkCallBackForCategory networkCallback) {
         mealRemoteDataSource.makeNetworkCallForCategory(networkCallback);
+    }
+
+    @Override
+    public void getCategoryForSearch(NetworkCallNBackForSearchCategory networkCallback) {
+        mealRemoteDataSource.makeNetworkCallForCategorySearch(networkCallback);
+    }
+
+    @Override
+    public void getAreaForSearch(NetworkCallNBackForArea networkCallback) {
+        mealRemoteDataSource.makeNetworkCallForArea(networkCallback);
+    }
+
+    @Override
+    public void getForIngredientSearch(NetworkCallNBackForIngredient networkCallback) {
+        mealRemoteDataSource.makeNetworkCallForIngredientSearch(networkCallback);
     }
 
     @Override

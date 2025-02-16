@@ -40,11 +40,10 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClickListener {
     private static final String TAG = "HomeFragment";
     private RecyclerView categoryRV, mealRV;
-    private ImageView imgFav;
+    private ImageView imgFav,imgSearch;
     private CategoryAdapter categoryAdapter;
     private MealAdapter mealAdapter;
-    private List<CategoryModel> categoryModelList = new ArrayList<>();
-    private List<MealModel> meals = new ArrayList<>();
+
     private HomePresenter homePresenter;
 
     public HomeFragment() {
@@ -71,11 +70,11 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
         super.onViewCreated(view, savedInstanceState);
         initRecyclerViews(view);
         imgFav=view.findViewById(R.id.img_love2);
+        imgSearch=view.findViewById(R.id.img_filter);
         setUpPresenter();
         homePresenter.getMeals();
         homePresenter.getCategories();
-        //fetchCategories();
-        //fetchMeals();
+
         UserModel user= HomeFragmentArgs.fromBundle(getArguments()).getUserModel();
         if (user != null) {
             Toast.makeText(getContext(), "User: " + user.getName(), Toast.LENGTH_SHORT).show();
@@ -86,6 +85,12 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_favouritesFragment);
            }
        });
+        imgSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_searchFragment);
+            }
+        });
 
     }
     private void setUpPresenter() {
@@ -96,12 +101,12 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
     private void initRecyclerViews(View view) {
         categoryRV = view.findViewById(R.id.re_category);
         categoryRV.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        categoryAdapter = new CategoryAdapter(getContext(), categoryModelList);
+        categoryAdapter = new CategoryAdapter(getContext(), new ArrayList<>());
         categoryRV.setAdapter(categoryAdapter);
 
         mealRV = view.findViewById(R.id.rv_gride_items);
         mealRV.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-        mealAdapter = new MealAdapter(requireContext(), meals,this);
+        mealAdapter = new MealAdapter(requireContext(), new ArrayList<>(),this);
         mealRV.setAdapter(mealAdapter);
     }
 
