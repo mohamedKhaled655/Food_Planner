@@ -40,7 +40,7 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClickListener {
     private static final String TAG = "HomeFragment";
     private RecyclerView categoryRV, mealRV;
-    private ImageView imgFav,imgSearch;
+
     private CategoryAdapter categoryAdapter;
     private MealAdapter mealAdapter;
 
@@ -69,8 +69,7 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerViews(view);
-        imgFav=view.findViewById(R.id.img_love2);
-        imgSearch=view.findViewById(R.id.img_filter);
+
         setUpPresenter();
         homePresenter.getMeals();
         homePresenter.getCategories();
@@ -79,18 +78,7 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
         if (user != null) {
             Toast.makeText(getContext(), "User: " + user.getName(), Toast.LENGTH_SHORT).show();
         }
-       imgFav.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-             //  Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_favouritesFragment);
-           }
-       });
-        imgSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              //  Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_searchFragment);
-            }
-        });
+
 
     }
     private void setUpPresenter() {

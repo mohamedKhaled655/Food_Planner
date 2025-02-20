@@ -7,7 +7,7 @@ import com.example.mealsapp.data.local.MealEntity;
 import java.util.List;
 
 public interface FavMealPresenter {
-    public LiveData<List<MealEntity>> getFavMealss();
+    public void getFavMeals();
     public void removeFromFav(MealEntity meal);
     public void addMealFromFav(MealEntity meal);
 }

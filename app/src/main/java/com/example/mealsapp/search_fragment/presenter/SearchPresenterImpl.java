@@ -13,7 +13,10 @@ import com.example.mealsapp.search_fragment.view.SearchMealView;
 
 import java.util.List;
 
-public class SearchPresenterImpl implements SearchPresenter, NetworkCallNBackForIngredient, NetworkCallNBackForSearchCategory, NetworkCallNBackForArea {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+public class SearchPresenterImpl implements SearchPresenter {
     private static final String TAG = "SearchPresenterImpl";
     private SearchMealView searchMealView;
     private MealRepository repository;
@@ -25,47 +28,61 @@ public class SearchPresenterImpl implements SearchPresenter, NetworkCallNBackFor
 
     @Override
     public void getSearchedArea() {
-        repository.getAreaForSearch(this);
+
+        repository.getAreaForSearch()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        areaModels -> {
+                            searchMealView.showSearchByArea(areaModels);
+                            Log.i(TAG, "getCountries: " + areaModels.size() + " Countries loaded");
+                        },
+                        error -> {
+                            if (searchMealView != null) {
+                                searchMealView.showErrorMsg(error.getMessage());
+                                Log.e(TAG, "Error loading Areas", error);
+                            }
+                        }
+                );
     }
 
     @Override
     public void getSearchedIngredient() {
-        repository.getForIngredientSearch(this);
+        repository.getForIngredientSearch()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        ingredientModels -> {
+                            searchMealView.showSearchByIngredient(ingredientModels);
+                            Log.i(TAG, "get ingredientModels: " + ingredientModels.size() + " ingredient loaded");
+                        },
+                        error -> {
+                            if (searchMealView != null) {
+                                searchMealView.showErrorMsg(error.getMessage());
+                                Log.e(TAG, "Error loading Areas", error);
+                            }
+                        }
+                );
     }
 
     @Override
     public void getSearchedCategories() {
-        repository.getCategoryForSearch(this);
+        repository.getCategoryForSearch()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        categorySearchModels -> {
+                            searchMealView.showSearchByCategory(categorySearchModels);
+                            Log.i(TAG, "get categorySearchModels: " + categorySearchModels.size() + " categorySearchModels loaded");
+                        },
+                        error -> {
+                            if (searchMealView != null) {
+                                searchMealView.showErrorMsg(error.getMessage());
+                                Log.e(TAG, "Error loading Areas", error);
+                            }
+                        }
+                );
     }
 
-    @Override
-    public void onSuccessForIngredientResult(List<IngredientModel> ingredientModels) {
-        searchMealView.showSearchByIngredient(ingredientModels);
-    }
 
-    @Override
-    public void onFailureForIngredientResult(String errMessage) {
-        searchMealView.showErrorMsg(errMessage);
-    }
-
-    @Override
-    public void onSuccessForAreaResult(List<AreaModel> areaModels) {
-        searchMealView.showSearchByArea(areaModels);
-    }
-
-    @Override
-    public void onFailureForAreaResult(String errMessage) {
-        searchMealView.showErrorMsg(errMessage);
-    }
-
-    @Override
-    public void onSuccessForCategorySearchResult(List<CategorySearchModel> categorySearchModels) {
-
-        searchMealView.showSearchByCategory(categorySearchModels);
-    }
-
-    @Override
-    public void onFailureForCategorySearchResult(String errMessage) {
-        searchMealView.showErrorMsg(errMessage);
-    }
 }

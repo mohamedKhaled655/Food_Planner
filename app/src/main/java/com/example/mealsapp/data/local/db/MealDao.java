@@ -10,14 +10,18 @@ import androidx.room.Query;
 import com.example.mealsapp.data.local.MealEntity;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+
 @Dao
 public interface MealDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMeal(MealEntity meal);
+    Completable insertMeal(MealEntity meal);
 
     @Delete
-    void deleteMeal(MealEntity meal);
+    Completable deleteMeal(MealEntity meal);
 
     @Query("SELECT * FROM meals")
-    LiveData<List<MealEntity>> getAllMeals();
+    Flowable<List<MealEntity>> getAllMeals();
 }

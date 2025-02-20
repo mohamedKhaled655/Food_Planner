@@ -66,8 +66,8 @@ dependencies {
     implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
     implementation ("io.reactivex.rxjava3:rxjava:3.1.5")
     //RXJava with retrofit
-    implementation ("com.squareup.retrofit2:adapter-rxjava2:+")
+    implementation ("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
     //RxJava with room
-    implementation ("androidx.room:room-rxjava2:2.6.1")
+    implementation ("androidx.room:room-rxjava3:2.6.1")
 
 }

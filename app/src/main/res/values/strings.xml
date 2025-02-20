@@ -20,5 +20,6 @@
     <string name="category_tiltle">Name</string>
     <string name="search_by_ingredients">Search by Ingredients</string>
     <string name="search">Search</string>
+    <string name="category">Category</string>
 
 </resources>

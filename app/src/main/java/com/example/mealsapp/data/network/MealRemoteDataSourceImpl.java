@@ -2,16 +2,25 @@ package com.example.mealsapp.data.network;
 
 import android.util.Log;
 
+import com.example.mealsapp.data.Models.AreaModel;
 import com.example.mealsapp.data.Models.AreaResponse;
+import com.example.mealsapp.data.Models.CategoryModel;
 import com.example.mealsapp.data.Models.CategoryResponse;
+import com.example.mealsapp.data.Models.CategorySearchModel;
 import com.example.mealsapp.data.Models.CategorySearchResponse;
+import com.example.mealsapp.data.Models.IngredientModel;
 import com.example.mealsapp.data.Models.IngredientResponse;
+import com.example.mealsapp.data.Models.MealModel;
 import com.example.mealsapp.data.Models.MealResponse;
 
+import java.util.List;
+
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MealRemoteDataSourceImpl implements MealRemoteDataSource {
@@ -25,6 +34,7 @@ public class MealRemoteDataSourceImpl implements MealRemoteDataSource {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
         mealService = retrofit.create(MealService.class);
     }
@@ -36,7 +46,32 @@ public class MealRemoteDataSourceImpl implements MealRemoteDataSource {
         return instance;
     }
 
+    @Override
+    public Single<List<MealModel>> getMeals() {
+        return mealService.getMeals().map(mealResponse ->mealResponse.getMeals());
+    }
 
+    @Override
+    public Single<List<CategoryModel>> getCategories() {
+        return mealService.getCategories().map(categoryResponse -> categoryResponse.getCategoryList());
+    }
+
+    @Override
+    public Single<List<AreaModel>> getCountries() {
+        return mealService.getAreasForSearch().map(areaResponse -> areaResponse.getAreaModels());
+    }
+
+    @Override
+    public Single<List<CategorySearchModel>> getCategoryForSearch() {
+        return mealService.getCategoryForSearch().map(categorySearchResponse -> categorySearchResponse.getCategorySearchModels());
+    }
+
+    @Override
+    public Single<List<IngredientModel>> getIngredientForSearch() {
+        return mealService.getIngredientsForSearch().map(ingredientResponse -> ingredientResponse.getIngredientModels());
+    }
+
+/*
     @Override
     public void makeNetworkCall(NetworkCallback networkCallback) {
         Call<MealResponse>call= mealService.getMeals();
@@ -152,4 +187,6 @@ public class MealRemoteDataSourceImpl implements MealRemoteDataSource {
             }
         });
     }
+
+    */
 }

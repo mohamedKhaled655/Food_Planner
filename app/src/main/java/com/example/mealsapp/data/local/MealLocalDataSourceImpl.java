@@ -9,10 +9,13 @@ import com.example.mealsapp.data.local.db.MealDatabase;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+
 public class MealLocalDataSourceImpl implements MealLocalDataSource{
     private final MealDao mealDao;
     private Context context;
-    private LiveData<List<MealEntity>>storedMeals;
+    private Flowable<List<MealEntity>> storedMeals;
     private static MealLocalDataSourceImpl mealLocalDataSource=null;
     public MealLocalDataSourceImpl(Context _context){
         this.context=_context;
@@ -28,18 +31,19 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource{
         return mealLocalDataSource;
     }
     @Override
-    public void addMealToFavourites(MealEntity meal) {
-        new Thread(() -> mealDao.insertMeal(meal)).start();
+    public Completable addMealToFavourites(MealEntity meal) {
+       // new Thread(() -> mealDao.insertMeal(meal)).start();
+        return mealDao.insertMeal(meal);
     }
 
     @Override
-    public void removeMealToFavourites(MealEntity meal) {
-        new Thread(() -> mealDao.deleteMeal(meal)).start();
-
+    public Completable removeMealToFavourites(MealEntity meal) {
+        //new Thread(() -> mealDao.deleteMeal(meal)).start();
+        return mealDao.deleteMeal(meal);
     }
 
     @Override
-    public LiveData<List<MealEntity>> getAllFavoriteMeals() {
+    public Flowable<List<MealEntity>> getAllFavoriteMeals() {
         return storedMeals;
     }
 

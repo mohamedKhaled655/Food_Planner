@@ -6,22 +6,23 @@ import com.example.mealsapp.data.Models.CategorySearchResponse;
 import com.example.mealsapp.data.Models.IngredientResponse;
 import com.example.mealsapp.data.Models.MealResponse;
 
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface MealService {
     @GET("categories.php")
-    Call<CategoryResponse> getCategories();
+    Single<CategoryResponse> getCategories();
 
     @GET("search.php?s=")
-    Call<MealResponse>getMeals();
+    Single<MealResponse>getMeals();
 
     @GET("list.php?i=list")
-    Call<IngredientResponse>getIngredientsForSearch();
+    Single<IngredientResponse>getIngredientsForSearch();
 
     @GET("list.php?a=list")
-    Call<AreaResponse>getAreasForSearch();
+    Single<AreaResponse>getAreasForSearch();
 
     @GET("list.php?c=list")
-    Call<CategorySearchResponse>getCategoryForSearch();
+    Single<CategorySearchResponse>getCategoryForSearch();
 }

@@ -2,6 +2,11 @@ package com.example.mealsapp.data.repo;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.mealsapp.data.Models.AreaModel;
+import com.example.mealsapp.data.Models.CategoryModel;
+import com.example.mealsapp.data.Models.CategorySearchModel;
+import com.example.mealsapp.data.Models.IngredientModel;
+import com.example.mealsapp.data.Models.MealModel;
 import com.example.mealsapp.data.local.MealEntity;
 import com.example.mealsapp.data.local.MealLocalDataSource;
 import com.example.mealsapp.data.network.MealRemoteDataSource;
@@ -12,6 +17,10 @@ import com.example.mealsapp.data.network.NetworkCallNBackForSearchCategory;
 import com.example.mealsapp.data.network.NetworkCallback;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 
 public class MealRepositoryImpl implements MealRepository{
     MealRemoteDataSource mealRemoteDataSource;
@@ -30,10 +39,36 @@ public class MealRepositoryImpl implements MealRepository{
     }
 
     @Override
-    public LiveData<List<MealEntity>> getStoredFavMeals() {
+    public Single<List<MealModel>> getAllMeals() {
+        return mealRemoteDataSource.getMeals();
+    }
+
+    @Override
+    public Single<List<CategoryModel>> getCategoryMeals() {
+        return mealRemoteDataSource.getCategories();
+    }
+
+    @Override
+    public Single<List<CategorySearchModel>> getCategoryForSearch() {
+        return mealRemoteDataSource.getCategoryForSearch();
+    }
+
+    @Override
+    public Single<List<AreaModel>> getAreaForSearch() {
+        return mealRemoteDataSource.getCountries();
+    }
+
+    @Override
+    public Single<List<IngredientModel>> getForIngredientSearch() {
+        return mealRemoteDataSource.getIngredientForSearch();
+    }
+
+    @Override
+    public Flowable<List<MealEntity>> getStoredFavMeals() {
         return mealLocalDataSource.getAllFavoriteMeals();
     }
 
+   /*
     @Override
     public void getAllMeals(NetworkCallback networkCallback) {
         mealRemoteDataSource.makeNetworkCall(networkCallback);
@@ -58,14 +93,15 @@ public class MealRepositoryImpl implements MealRepository{
     public void getForIngredientSearch(NetworkCallNBackForIngredient networkCallback) {
         mealRemoteDataSource.makeNetworkCallForIngredientSearch(networkCallback);
     }
+    */
 
     @Override
-    public void addMealToFav(MealEntity meal) {
-        mealLocalDataSource.addMealToFavourites(meal);
+    public Completable addMealToFav(MealEntity meal) {
+       return mealLocalDataSource.addMealToFavourites(meal);
     }
 
     @Override
-    public void removeMealToFav(MealEntity meal) {
-        mealLocalDataSource.removeMealToFavourites(meal);
+    public Completable removeMealToFav(MealEntity meal) {
+        return mealLocalDataSource.removeMealToFavourites(meal);
     }
 }

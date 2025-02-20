@@ -12,7 +12,10 @@ import com.example.mealsapp.home_fragment.view.HomeMealView;
 
 import java.util.List;
 
-public class HomePresenterImpl implements HomePresenter, NetworkCallback , NetworkCallBackForCategory {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+public class HomePresenterImpl implements HomePresenter {
     private static final String TAG = "HomePresenterImpl";
    private HomeMealView homeMealView;
    private MealRepository repository;
@@ -25,41 +28,55 @@ public class HomePresenterImpl implements HomePresenter, NetworkCallback , Netwo
 
     @Override
     public void getMeals() {
-        repository.getAllMeals(this);
-        Log.i(TAG, "getMeals: ");
+        repository.getAllMeals()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        mealModels -> {
+                            homeMealView.showAllMealsData(mealModels);
+                            Log.i(TAG, "get mealModels: " + mealModels.size() + " mealModels loaded");
+                        },
+                        error -> {
+                            if (homeMealView != null) {
+                                homeMealView.showErrorMsg(error.getMessage());
+                                Log.e(TAG, "Error loading Areas", error);
+                            }
+                        }
+                );
+
     }
 
     @Override
     public void getCategories() {
-        repository.getCategoryMeals(this);
+        repository.getCategoryMeals()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        categoryModels -> {
+                            homeMealView.showAllCategoryData(categoryModels);
+                            Log.i(TAG, "get categoryModels: " + categoryModels.size() + " categoryModels loaded");
+                        },
+                        error -> {
+                            if (homeMealView != null) {
+                                homeMealView.showErrorMsg(error.getMessage());
+                                Log.e(TAG, "Error loading Areas", error);
+                            }
+                        }
+                );
     }
 
     @Override
     public void addMealToFav(MealEntity meal) {
-        repository.addMealToFav(meal);
+
+        repository.addMealToFav(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> Log.i(TAG, "Meal added to favorites"),
+                        error -> Log.e(TAG, "Error adding Meal to favorites", error)
+                );
     }
 
-    @Override
-    public void onSuccessResult(List<MealModel> products) {
-        homeMealView.showAllMealsData(products);
-        //Log.i(TAG, "onSuccessResult: "+products);
-       // homeMealView.showAllCategoryData(products);
-    }
 
-    @Override
-    public void onFailureResult(String errMessage) {
-        homeMealView.showErrorMsg(errMessage);
-        Log.i(TAG, "onFailureResult: "+errMessage);
-    }
 
-    @Override
-    public void onSuccessResultForCategory(List<CategoryModel> categoryModels) {
-        homeMealView.showAllCategoryData(categoryModels);
-    }
-
-    @Override
-    public void onFailureResultForCategory(String errMessage) {
-        homeMealView.showErrorMsg(errMessage);
-        Log.i(TAG, "onFailureResultForCategory: "+errMessage);
-    }
 }

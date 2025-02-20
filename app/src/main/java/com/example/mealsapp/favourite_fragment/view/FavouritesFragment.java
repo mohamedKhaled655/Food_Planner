@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.local.MealEntity;
@@ -59,14 +60,7 @@ public class FavouritesFragment extends Fragment implements OnRemoveFavClickList
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         setUpPresenter();
-        favMealPresenter.getFavMealss().observe(getViewLifecycleOwner(), new Observer<List<MealEntity>>() {
-            @Override
-            public void onChanged(List<MealEntity> mealEntities) {
-                if (mealEntities != null) {
-                    adapter.setProducts(mealEntities);
-                }
-            }
-        });
+        favMealPresenter.getFavMeals();
     }
 
     private void setUpPresenter() {
@@ -76,7 +70,7 @@ public class FavouritesFragment extends Fragment implements OnRemoveFavClickList
 
     @Override
     public void showFavData(List<MealEntity> mealEntities) {
-        favMealPresenter.getFavMealss();
+        adapter.setProducts(mealEntities);
         adapter.notifyDataSetChanged();
     }
 
@@ -92,8 +86,6 @@ public class FavouritesFragment extends Fragment implements OnRemoveFavClickList
     public void onRemoveFromFavorite(MealEntity meal) {
 
         favMealPresenter.removeFromFav(meal);
-        List<MealEntity> updatedList = new ArrayList<>();
-        updatedList.remove(meal);
-        adapter.setProducts(updatedList);
+        Toast.makeText(getContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
     }
 }
