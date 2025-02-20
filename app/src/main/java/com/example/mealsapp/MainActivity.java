@@ -2,6 +2,7 @@ package com.example.mealsapp;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -26,6 +27,7 @@ import com.example.mealsapp.home_fragment.view.CategoryAdapter;
 import com.example.mealsapp.home_fragment.view.MealAdapter;
 import com.example.mealsapp.home_fragment.view.OnAddFavClickListener;
 import com.example.mealsapp.home_fragment.view.OnFavClickLisenter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.IOException;
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements OnAddFavClickList
 
     NavController navController;
     NavigationView navigationView;
+    BottomNavigationView bottomNavigationView;
+
 
 
     @Override
@@ -56,16 +60,8 @@ public class MainActivity extends AppCompatActivity implements OnAddFavClickList
         setContentView(R.layout.activity_main);
         Log.i(TAG, "onCreate: Activity started");
 
-       /* setContentView(R.layout.home_page);
-        Log.i(TAG, "onCreate: Activity started");
 
-        initRecyclerViews();
-        mealService = MealClient.getInstance().create(MealService.class);
-
-        //fetchCategories();
-        fetchMeals();
-*/
-
+        bottomNavigationView=findViewById(R.id.bottomNav);
         navigationView=findViewById(R.id.nav_drawer);
 
         ActionBar actionBar=getSupportActionBar();
@@ -75,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements OnAddFavClickList
         NavHostFragment navHostFragment=(NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView2);
         navController=navHostFragment.getNavController();
         //to show app bar
-        NavigationUI.setupWithNavController(navigationView, navController);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
         /// to use Nav Controller in main activity
         //to use bottom nav bar
         /*
@@ -90,15 +86,17 @@ public class MainActivity extends AppCompatActivity implements OnAddFavClickList
             @Override
             public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
 
-                if(navDestination.getId()==R.id.mealDetailsFragment){
+                if(navDestination.getId()==R.id.homeFragment||navDestination.getId()==R.id.searchFragment||navDestination.getId()==R.id.favouritesFragment||navDestination.getId()==R.id.profileFragment){
                     //getSupportActionBar().show();
                     getSupportActionBar().hide();
+                    bottomNavigationView.setVisibility(View.VISIBLE);
                 }
                 /*else if (navDestination.getId()==R.id.homeFragment) {
                     getSupportActionBar().show();
                     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 }*/
                 else{
+                    bottomNavigationView.setVisibility(View.GONE);
                     getSupportActionBar().hide();
                 }
 
@@ -126,62 +124,11 @@ public class MainActivity extends AppCompatActivity implements OnAddFavClickList
         mealRV.setAdapter(mealAdapter);
     }
 
-    private void fetchCategories() {
-        mealService.getCategories().enqueue(new Callback<CategoryResponse>() {
-            @Override
-            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    categoryModelList.clear();
-                    categoryModelList.addAll(response.body().getCategoryList());
-                    categoryAdapter.notifyDataSetChanged();
-                    Log.i(TAG, "Categories fetched successfully");
-                } else {
-                    handleError(response);
-                }
-            }
 
-            @Override
-            public void onFailure(Call<CategoryResponse> call, Throwable throwable) {
-                handleFailure(throwable);
-            }
-        });
-    }
 
-    private void fetchMeals() {
-        mealService.getMeals().enqueue(new Callback<MealResponse>() {
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    meals.clear();
-                    meals.addAll(response.body().getMeals());
-                    mealAdapter.notifyDataSetChanged();
-                    Log.i(TAG, meals.size()+"");
-                    Log.i(TAG, "Meals fetched successfully");
-                } else {
-                    handleError(response);
-                }
-            }
 
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable throwable) {
-                handleFailure(throwable);
-            }
-        });
-    }
 
-    private void handleError(Response<?> response) {
-        try {
-            Log.e(TAG, "Response error: " + response.code() + " - " + response.errorBody().string());
-        } catch (IOException e) {
-            Log.e(TAG, "Error parsing error body", e);
-        }
-        Toast.makeText(MainActivity.this, "Error fetching data: " + response.code(), Toast.LENGTH_SHORT).show();
-    }
 
-    private void handleFailure(Throwable throwable) {
-        Log.e(TAG, "Request failed", throwable);
-        Toast.makeText(MainActivity.this, "Failed to connect. Check your internet!", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onAddToFavorite(MealEntity mealEntity) {

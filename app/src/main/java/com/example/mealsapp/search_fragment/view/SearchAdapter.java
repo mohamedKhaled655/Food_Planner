@@ -1,6 +1,8 @@
 package com.example.mealsapp.search_fragment.view;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +17,21 @@ import com.example.mealsapp.R;
 import com.example.mealsapp.data.Models.CategoryModel;
 import com.example.mealsapp.data.Models.CategorySearchModel;
 import com.example.mealsapp.home_fragment.view.CategoryAdapter;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
+import java.util.Random;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
 
     private Context context;
     private List<CategorySearchModel> categorySearchModels;
+    private Random random;
 
     public SearchAdapter(Context context, List<CategorySearchModel> searchModelList) {
         this.context = context;
         this.categorySearchModels = searchModelList;
+        this.random = new Random();
     }
 
     @NonNull
@@ -35,19 +41,27 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
         return new SearchAdapter.SearchViewHolder(view);
     }
+    private static final int[] COLORS = {
+            Color.parseColor("#FFCDD2"),
+            Color.parseColor("#F8BBD0"),
+            Color.parseColor("#E1BEE7"),
+            Color.parseColor("#C5CAE9"),
+            Color.parseColor("#B2DFDB")
+    };
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
         CategorySearchModel categoryModel=categorySearchModels.get(position);
         holder.txtCatTitle.setText(categoryModel.getStrCategory());
 
+        int color = COLORS[position % COLORS.length];
 
+        holder.cardView.setBackgroundTintList(ColorStateList.valueOf(color));
         //Glide.with(context).load(imgUrl).circleCrop().into(holder.catImage);
         Glide.with(context)
                 .load("https://www.themealdb.com/images/category/"+categoryModel.getStrCategory()+".png")
-                .placeholder(R.drawable.lock)
-                .error(R.drawable.lock)
-                .circleCrop()
+                .placeholder(R.drawable.loadimg)
+                .error(R.drawable.err_img)
                 .into(holder.catImage);
     }
 
@@ -64,11 +78,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public static class SearchViewHolder extends RecyclerView.ViewHolder{
         TextView txtCatTitle,txtCatId,txtCatDesc;
         ImageView catImage;
+        MaterialCardView cardView;
         public SearchViewHolder(@NonNull View itemView) {
             super(itemView);
             txtCatTitle=itemView.findViewById(R.id.txt_titleSearch);
 
             catImage=itemView.findViewById(R.id.img_searchItem);
+            cardView=itemView.findViewById(R.id.card_chip_item);
 
         }
     }

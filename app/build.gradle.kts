@@ -62,4 +62,12 @@ dependencies {
     implementation ("androidx.room:room-runtime:2.6.1")
     annotationProcessor ("androidx.room:room-compiler:2.6.1")
 
+    //RxJava
+    implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
+    implementation ("io.reactivex.rxjava3:rxjava:3.1.5")
+    //RXJava with retrofit
+    implementation ("com.squareup.retrofit2:adapter-rxjava2:+")
+    //RxJava with room
+    implementation ("androidx.room:room-rxjava2:2.6.1")
+
 }

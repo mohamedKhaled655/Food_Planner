@@ -82,13 +82,13 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
        imgFav.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_favouritesFragment);
+             //  Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_favouritesFragment);
            }
        });
         imgSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_searchFragment);
+              //  Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_searchFragment);
             }
         });
 

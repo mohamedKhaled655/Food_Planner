@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.mealsapp.R;
@@ -51,7 +52,7 @@ public class SearchFragment extends Fragment implements SearchMealView{
     private SearchPresenter searchPresenter;
     private ChipGroup chipGroup;
     private RecyclerView recyclerView;
-    List<CategorySearchModel> categorySearchModels;
+    private ProgressBar loadingIndicator;
 
     private Map<String, List<CategoryModel>> searchByCategory;
 
@@ -90,10 +91,20 @@ public class SearchFragment extends Fragment implements SearchMealView{
         ingredientAdapter = new IngredientAdapter(getContext(),new ArrayList<>());
         recyclerView.setAdapter(ingredientAdapter);
         searchEditText = view.findViewById(R.id.search_edit_text);
+        loadingIndicator=view.findViewById(R.id.loading_indicator);
         setUpPresenter();
         searchPresenter.getSearchedCategories();
         setUpFilterChips();
         setupSearchEditText();
+    }
+    private void showLoading() {
+        loadingIndicator.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    private void hideLoading() {
+        loadingIndicator.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     private void setupSearchEditText() {
@@ -166,6 +177,7 @@ public class SearchFragment extends Fragment implements SearchMealView{
                 if (isChecked) {
                     currentFilter = chip.getText().toString();
                     searchEditText.setText("");
+                    showLoading();
                     switch (currentFilter) {
                         case "Category":
                             recyclerView.setAdapter(searchAdapter);
@@ -190,6 +202,7 @@ public class SearchFragment extends Fragment implements SearchMealView{
 
     @Override
     public void showSearchByCategory(List<CategorySearchModel> models) {
+        hideLoading();
         if (models != null) {
             originalCategoryList = new ArrayList<>(models);
             searchAdapter.setCategories(models);
@@ -198,6 +211,7 @@ public class SearchFragment extends Fragment implements SearchMealView{
 
     @Override
     public void showSearchByArea(List<AreaModel> models) {
+        hideLoading();
         if (models != null) {
             originalAreaList = new ArrayList<>(models);
             areaAdapter.setAreas(models);
@@ -206,6 +220,7 @@ public class SearchFragment extends Fragment implements SearchMealView{
 
     @Override
     public void showSearchByIngredient(List<IngredientModel> models) {
+        hideLoading();
         if (models != null) {
             originalIngredientList = new ArrayList<>(models);
             ingredientAdapter.setIngredients(models);
