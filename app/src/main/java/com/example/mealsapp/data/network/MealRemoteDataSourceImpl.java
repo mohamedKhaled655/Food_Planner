@@ -10,6 +10,7 @@ import com.example.mealsapp.data.Models.CategorySearchModel;
 import com.example.mealsapp.data.Models.CategorySearchResponse;
 import com.example.mealsapp.data.Models.IngredientModel;
 import com.example.mealsapp.data.Models.IngredientResponse;
+import com.example.mealsapp.data.Models.MealDetailsModel;
 import com.example.mealsapp.data.Models.MealModel;
 import com.example.mealsapp.data.Models.MealResponse;
 
@@ -69,6 +70,11 @@ public class MealRemoteDataSourceImpl implements MealRemoteDataSource {
     @Override
     public Single<List<IngredientModel>> getIngredientForSearch() {
         return mealService.getIngredientsForSearch().map(ingredientResponse -> ingredientResponse.getIngredientModels());
+    }
+
+    @Override
+    public Single<List<MealDetailsModel>> getMealDetails(String mealId) {
+        return mealService.getMealDetails(mealId).map(mealDetailsResponse -> mealDetailsResponse.getMeals());
     }
 
 /*

@@ -127,8 +127,9 @@ public class LoginFragment extends Fragment {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail: success");
                             UserModel userModel = new UserModel(password, email);
-                            LoginFragmentDirections.ActionLoginFragmentToHomeFragment action = LoginFragmentDirections.actionLoginFragmentToHomeFragment(userModel);
-                            Navigation.findNavController(view).navigate(action);
+                            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
+                            /*LoginFragmentDirections.ActionLoginFragmentToHomeFragment action = LoginFragmentDirections.actionLoginFragmentToHomeFragment(userModel);
+                            Navigation.findNavController(view).navigate(action);*/
                         } else {
                             Log.w(TAG, "signInWithEmail: failure", task.getException());
                             Toast.makeText(getContext(), "Login failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();

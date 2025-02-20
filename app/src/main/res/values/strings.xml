@@ -21,5 +21,8 @@
     <string name="search_by_ingredients">Search by Ingredients</string>
     <string name="search">Search</string>
     <string name="category">Category</string>
+    <string name="ingredient">Ingredients :</string>
+    <string name="instructions">Instructions :</string>
+    <string name="youtube">Youtube :</string>
 
 </resources>

@@ -53,7 +53,8 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth")
 
     implementation ("com.google.android.material:material:<version>")
-
+    //lottie
+    implementation ("com.airbnb.android:lottie:6.1.0")
     //Navigation Componant
     implementation (libs.navigation.fragment)
     implementation (libs.androidx.navigation.ui)

@@ -74,10 +74,10 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
         homePresenter.getMeals();
         homePresenter.getCategories();
 
-        UserModel user= HomeFragmentArgs.fromBundle(getArguments()).getUserModel();
+        /*UserModel user= HomeFragmentArgs.fromBundle(getArguments()).getUserModel();
         if (user != null) {
             Toast.makeText(getContext(), "User: " + user.getName(), Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
 
     }

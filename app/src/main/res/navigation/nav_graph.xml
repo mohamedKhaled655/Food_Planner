@@ -66,15 +66,10 @@
         <action
             android:id="@+id/action_homeFragment_to_mealDetailsFragment"
             app:destination="@id/mealDetailsFragment" />
-        <argument
-            android:name="userModel"
-            app:nullable="false"
-
-            app:argType="com.example.mealsapp.data.Models.UserModel" />
     </fragment>
     <fragment
         android:id="@+id/mealDetailsFragment"
-        android:name="com.example.mealsapp.MealDetailsFragment"
+        android:name="com.example.mealsapp.details_fragement.view.MealDetailsFragment"
         android:label="@string/meal_details"
         tools:layout="@layout/fragment_meal_details" >
         <argument

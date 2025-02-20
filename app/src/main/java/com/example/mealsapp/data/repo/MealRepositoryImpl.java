@@ -6,6 +6,7 @@ import com.example.mealsapp.data.Models.AreaModel;
 import com.example.mealsapp.data.Models.CategoryModel;
 import com.example.mealsapp.data.Models.CategorySearchModel;
 import com.example.mealsapp.data.Models.IngredientModel;
+import com.example.mealsapp.data.Models.MealDetailsModel;
 import com.example.mealsapp.data.Models.MealModel;
 import com.example.mealsapp.data.local.MealEntity;
 import com.example.mealsapp.data.local.MealLocalDataSource;
@@ -61,6 +62,11 @@ public class MealRepositoryImpl implements MealRepository{
     @Override
     public Single<List<IngredientModel>> getForIngredientSearch() {
         return mealRemoteDataSource.getIngredientForSearch();
+    }
+
+    @Override
+    public Single<List<MealDetailsModel>> getMealDetails(String mealId) {
+       return mealRemoteDataSource.getMealDetails(mealId);
     }
 
     @Override

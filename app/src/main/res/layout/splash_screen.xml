@@ -3,15 +3,16 @@
     android:id="@+id/splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#22C7A9">
+    android:background="#FFFFFF">
 
-    <ImageView
-        android:id="@+id/img_splash"
-        android:layout_width="match_parent"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_gravity="center"
-        android:paddingLeft="48dp"
-        app:srcCompat="@drawable/f1" />
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_fileName="food_animation.json" />
 
     <TextView
         android:id="@+id/txt_splash_title"
@@ -20,7 +21,7 @@
         android:layout_gravity="bottom|center"
         android:paddingBottom="140dp"
         android:text="@string/app_title"
-        android:textColor="@color/white"
+        android:textColor="#C9F44336"
         android:textStyle="bold"
         android:textSize="24sp" />
 </FrameLayout>
