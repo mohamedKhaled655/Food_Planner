@@ -77,6 +77,21 @@ public class MealRemoteDataSourceImpl implements MealRemoteDataSource {
         return mealService.getMealDetails(mealId).map(mealDetailsResponse -> mealDetailsResponse.getMeals());
     }
 
+    @Override
+    public Single<List<MealModel>> getMealsByCategory(String category) {
+        return mealService.getMealsByCategory(category).map(mealResponse -> mealResponse.getMeals());
+    }
+
+    @Override
+    public Single<List<MealModel>> getMealsByArea(String area) {
+        return mealService.getMealsByArea(area).map(mealResponse -> mealResponse.getMeals());
+    }
+
+    @Override
+    public Single<List<MealModel>> getMealsByIngredient(String ingredient) {
+        return mealService.getMealsByIngredient(ingredient).map(mealResponse -> mealResponse.getMeals());
+    }
+
 /*
     @Override
     public void makeNetworkCall(NetworkCallback networkCallback) {

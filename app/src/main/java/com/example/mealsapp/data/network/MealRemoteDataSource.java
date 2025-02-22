@@ -26,4 +26,7 @@ public interface MealRemoteDataSource {
     Single<List<CategorySearchModel>> getCategoryForSearch();
     Single<List<IngredientModel>> getIngredientForSearch();
     Single<List<MealDetailsModel>> getMealDetails(String mealId);
+    Single<List<MealModel>> getMealsByCategory(String category);
+    Single<List<MealModel>> getMealsByArea(String area);
+    Single<List<MealModel>> getMealsByIngredient(String ingredient);
 }

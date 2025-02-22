@@ -19,6 +19,12 @@
         android:title="Search"
         app:showAsAction="ifRoom"
         />
+    <item
+        android:id="@+id/plannedMealsFragment"
+        android:icon="@drawable/calendar"
+        android:title="Planned"
+        app:showAsAction="ifRoom"
+        />
 
     <item
         android:id="@+id/profileFragment"

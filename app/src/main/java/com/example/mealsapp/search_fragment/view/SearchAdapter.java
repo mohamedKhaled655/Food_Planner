@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +18,7 @@ import com.example.mealsapp.R;
 import com.example.mealsapp.data.Models.CategoryModel;
 import com.example.mealsapp.data.Models.CategorySearchModel;
 import com.example.mealsapp.home_fragment.view.CategoryAdapter;
+import com.example.mealsapp.home_fragment.view.HomeFragmentDirections;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
@@ -63,6 +65,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 .placeholder(R.drawable.loadimg)
                 .error(R.drawable.err_img)
                 .into(holder.catImage);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               // Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_mealsFragment2);
+                SearchFragmentDirections.ActionSearchFragmentToMealsFragment2 action=SearchFragmentDirections.actionSearchFragmentToMealsFragment2(categoryModel.getStrCategory(),"category");
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
     }
 
     @Override

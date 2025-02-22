@@ -9,6 +9,7 @@ import com.example.mealsapp.data.Models.IngredientModel;
 import com.example.mealsapp.data.Models.MealDetailsModel;
 import com.example.mealsapp.data.Models.MealModel;
 import com.example.mealsapp.data.local.MealEntity;
+import com.example.mealsapp.data.local.PlannedMealEntity;
 import com.example.mealsapp.data.network.NetworkCallBackForCategory;
 import com.example.mealsapp.data.network.NetworkCallNBackForArea;
 import com.example.mealsapp.data.network.NetworkCallNBackForIngredient;
@@ -29,6 +30,10 @@ public interface MealRepository {
     public Single<List<IngredientModel>> getForIngredientSearch();
     public Single<List<MealDetailsModel>> getMealDetails(String mealId);
 
+    public Single<List<MealModel>> getAllMealsByCategory(String category);
+    public Single<List<MealModel>> getAllMealsByArea(String area);
+    public Single<List<MealModel>> getAllMealsByIngredient(String ingredient);
+
     /*
     public void getAllMeals(NetworkCallback networkCallback);
     public void getCategoryMeals(NetworkCallBackForCategory networkCallback);
@@ -39,6 +44,12 @@ public interface MealRepository {
     public Flowable<List<MealEntity>> getStoredFavMeals();
     public Completable addMealToFav(MealEntity meal);
     public Completable removeMealToFav(MealEntity meal);
+
+    /////
+    Completable insertPlannedMeal(PlannedMealEntity plannedMeal);
+    Completable deletePlannedMeal(PlannedMealEntity plannedMeal);
+    Flowable<List<PlannedMealEntity>> getPlannedMealsByDate(String date);
+    Flowable<List<PlannedMealEntity>> getAllPlannedMeals();
 
 
 }

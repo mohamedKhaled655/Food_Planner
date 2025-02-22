@@ -11,6 +11,7 @@ public class MealModel  implements Parcelable {
     private String strCategory;
     private String strInstructions;
     private String strYoutube;
+    private boolean isFavorite;
 
     public MealModel() {
     }
@@ -23,6 +24,7 @@ public class MealModel  implements Parcelable {
         this.strCategory = strCategory;
         this.strInstructions = strInstructions;
         this.strYoutube = strYoutube;
+        isFavorite=false;
     }
 
     protected MealModel(Parcel in) {
@@ -117,6 +119,14 @@ public class MealModel  implements Parcelable {
 
     public void setStrYoutube(String strYoutube) {
         this.strYoutube = strYoutube;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     @Override

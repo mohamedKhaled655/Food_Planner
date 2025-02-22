@@ -38,7 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements OnAddFavClickListener {
+public class MainActivity extends AppCompatActivity  {
     private static final String TAG = "MainActivity";
     private RecyclerView categoryRV, mealRV;
     private CategoryAdapter categoryAdapter;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements OnAddFavClickList
             @Override
             public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
 
-                if(navDestination.getId()==R.id.homeFragment||navDestination.getId()==R.id.searchFragment||navDestination.getId()==R.id.favouritesFragment||navDestination.getId()==R.id.profileFragment){
+                if(navDestination.getId()==R.id.homeFragment||navDestination.getId()==R.id.searchFragment||navDestination.getId()==R.id.favouritesFragment||navDestination.getId()==R.id.profileFragment|| navDestination.getId()==R.id.plannedMealsFragment){
                     //getSupportActionBar().show();
                     getSupportActionBar().hide();
                     bottomNavigationView.setVisibility(View.VISIBLE);
@@ -112,17 +112,6 @@ public class MainActivity extends AppCompatActivity implements OnAddFavClickList
 
 
 
-    private void initRecyclerViews() {
-        /*categoryRV = findViewById(R.id.rv_category_item);
-        categoryRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        categoryAdapter = new CategoryAdapter(this, categoryModelList);
-        categoryRV.setAdapter(categoryAdapter);*/
-
-        mealRV = findViewById(R.id.rv_gride_items);
-        mealRV.setLayoutManager(new GridLayoutManager(this, 2));
-        mealAdapter = new MealAdapter(this, meals,this);
-        mealRV.setAdapter(mealAdapter);
-    }
 
 
 
@@ -130,8 +119,6 @@ public class MainActivity extends AppCompatActivity implements OnAddFavClickList
 
 
 
-    @Override
-    public void onAddToFavorite(MealEntity mealEntity) {
 
-    }
+
 }

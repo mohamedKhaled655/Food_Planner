@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -55,6 +56,14 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
                 .placeholder(R.drawable.loadimg)
                 .error(R.drawable.err_img)
                 .into(holder.areaImage);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_mealsFragment2);
+                SearchFragmentDirections.ActionSearchFragmentToMealsFragment2 action=SearchFragmentDirections.actionSearchFragmentToMealsFragment2(areaModel.getStrArea(),"area");
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
     }
 
     @Override

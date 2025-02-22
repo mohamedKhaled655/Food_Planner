@@ -12,4 +12,10 @@ public interface MealLocalDataSource {
     Completable removeMealToFavourites(MealEntity meal);
     Flowable<List<MealEntity>> getAllFavoriteMeals();
 
+
+    Completable insertPlannedMeal(PlannedMealEntity plannedMeal);
+    Completable deletePlannedMeal(PlannedMealEntity plannedMeal);
+    Flowable<List<PlannedMealEntity>> getPlannedMealsByDate(String date);
+    Flowable<List<PlannedMealEntity>> getAllPlannedMeals();
+
 }

@@ -91,12 +91,12 @@ public class MealDetailsFragment extends Fragment implements DetailsMealView {
         });
 
 
-        MealModel mealInfo = MealDetailsFragmentArgs.fromBundle(getArguments()).getMealInfo();
-        Toast.makeText(getContext(), mealInfo.getIdMeal(), Toast.LENGTH_SHORT).show();
+        String mealId = MealDetailsFragmentArgs.fromBundle(getArguments()).getMealId();
+        Toast.makeText(getContext(), mealId, Toast.LENGTH_SHORT).show();
 
 
         setUpPresenter();
-        mealDetailsPresenter.getMealDetails(mealInfo.getIdMeal());
+        mealDetailsPresenter.getMealDetails(mealId);
 
 
         setupWebView();

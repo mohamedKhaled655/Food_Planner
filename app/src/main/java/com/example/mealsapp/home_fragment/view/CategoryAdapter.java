@@ -68,8 +68,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             txtCatTitle=itemView.findViewById(R.id.cat_title);
-           // txtCatId=itemView.findViewById(R.id.txt_id);
-            //txtCatDesc=itemView.findViewById(R.id.txt_desc);
+
             catImage=itemView.findViewById(R.id.img_category);
 
         }

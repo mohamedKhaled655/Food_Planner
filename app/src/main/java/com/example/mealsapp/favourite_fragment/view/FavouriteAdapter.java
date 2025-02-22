@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -70,7 +71,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
         private final TextView favTitle;
         private final TextView favCatView;
         private final ImageView favImage;
-        private final Button favActionButton;
+        private final ImageButton favActionButton;
         public FavouriteViewHolder(@NonNull View itemView) {
             super(itemView);
 

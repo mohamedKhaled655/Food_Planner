@@ -24,6 +24,7 @@ import com.example.mealsapp.data.Models.CategoryModel;
 import com.example.mealsapp.data.Models.MealModel;
 import com.example.mealsapp.data.Models.UserModel;
 import com.example.mealsapp.data.local.MealLocalDataSourceImpl;
+import com.example.mealsapp.data.local.PlannedMealEntity;
 import com.example.mealsapp.data.network.MealRemoteDataSourceImpl;
 import com.example.mealsapp.data.repo.MealRepository;
 import com.example.mealsapp.data.repo.MealRepositoryImpl;
@@ -124,5 +125,16 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
     @Override
     public void onAddToFavorite(MealEntity mealEntity) {
         homePresenter.addMealToFav(mealEntity);
+    }
+
+    @Override
+    public void onRemoveFromFavorite(MealEntity mealEntity) {
+        homePresenter.removeMealToFav(mealEntity);
+    }
+
+    @Override
+    public void onAddToPlannedMeal(PlannedMealEntity plannedMealEntity) {
+        homePresenter.addToPlannedMeal(plannedMealEntity);
+        Toast.makeText(getContext(), "plannedMealEntity"+plannedMealEntity.getPlannedDate(), Toast.LENGTH_SHORT).show();
     }
 }

@@ -10,6 +10,7 @@ import com.example.mealsapp.data.Models.MealDetailsModel;
 import com.example.mealsapp.data.Models.MealModel;
 import com.example.mealsapp.data.local.MealEntity;
 import com.example.mealsapp.data.local.MealLocalDataSource;
+import com.example.mealsapp.data.local.PlannedMealEntity;
 import com.example.mealsapp.data.network.MealRemoteDataSource;
 import com.example.mealsapp.data.network.NetworkCallBackForCategory;
 import com.example.mealsapp.data.network.NetworkCallNBackForArea;
@@ -70,6 +71,21 @@ public class MealRepositoryImpl implements MealRepository{
     }
 
     @Override
+    public Single<List<MealModel>> getAllMealsByCategory(String category) {
+        return mealRemoteDataSource.getMealsByCategory(category);
+    }
+
+    @Override
+    public Single<List<MealModel>> getAllMealsByArea(String area) {
+        return mealRemoteDataSource.getMealsByArea(area);
+    }
+
+    @Override
+    public Single<List<MealModel>> getAllMealsByIngredient(String ingredient) {
+        return mealRemoteDataSource.getMealsByIngredient(ingredient);
+    }
+
+    @Override
     public Flowable<List<MealEntity>> getStoredFavMeals() {
         return mealLocalDataSource.getAllFavoriteMeals();
     }
@@ -109,5 +125,25 @@ public class MealRepositoryImpl implements MealRepository{
     @Override
     public Completable removeMealToFav(MealEntity meal) {
         return mealLocalDataSource.removeMealToFavourites(meal);
+    }
+
+    @Override
+    public Completable insertPlannedMeal(PlannedMealEntity plannedMeal) {
+        return mealLocalDataSource.insertPlannedMeal(plannedMeal);
+    }
+
+    @Override
+    public Completable deletePlannedMeal(PlannedMealEntity plannedMeal) {
+        return mealLocalDataSource.deletePlannedMeal(plannedMeal);
+    }
+
+    @Override
+    public Flowable<List<PlannedMealEntity>> getPlannedMealsByDate(String date) {
+        return mealLocalDataSource.getPlannedMealsByDate(date);
+    }
+
+    @Override
+    public Flowable<List<PlannedMealEntity>> getAllPlannedMeals() {
+        return mealLocalDataSource.getAllPlannedMeals();
     }
 }
