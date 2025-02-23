@@ -14,11 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mealsapp.R;
-import com.example.mealsapp.data.local.MealEntity;
+
 import com.example.mealsapp.data.local.PlannedMealEntity;
-import com.example.mealsapp.favourite_fragment.view.FavouriteAdapter;
-import com.example.mealsapp.favourite_fragment.view.OnRemoveFavClickListener;
-import com.example.mealsapp.home_fragment.view.OnFavClickLisenter;
+
 
 import java.util.List;
 

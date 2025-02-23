@@ -10,4 +10,5 @@ public interface HomeMealView {
     public void showAllCategoryData(List<CategoryModel> models);
     public void showErrorMsg(String err);
 
+
 }

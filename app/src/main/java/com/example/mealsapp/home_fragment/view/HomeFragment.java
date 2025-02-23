@@ -1,10 +1,15 @@
 package com.example.mealsapp.home_fragment.view;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -15,9 +20,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.local.MealEntity;
 import com.example.mealsapp.data.Models.CategoryModel;
@@ -40,53 +48,53 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClickListener {
     private static final String TAG = "HomeFragment";
-    private RecyclerView categoryRV, mealRV;
 
+    private RecyclerView categoryRV, mealRV;
     private CategoryAdapter categoryAdapter;
     private MealAdapter mealAdapter;
-
     private HomePresenter homePresenter;
-
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
+    private View contentLayout;
+    private View noInternetLayout;
+    private Button btnRetry;
+    private LottieAnimationView animationView;
+    private TextView txtConnection;
+    private ConnectivityManager.NetworkCallback networkCallback;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.home_page, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initRecyclerViews(view);
 
+
+        initViews(view);
         setUpPresenter();
-        homePresenter.getMeals();
-        homePresenter.getCategories();
-
-        /*UserModel user= HomeFragmentArgs.fromBundle(getArguments()).getUserModel();
-        if (user != null) {
-            Toast.makeText(getContext(), "User: " + user.getName(), Toast.LENGTH_SHORT).show();
-        }*/
-
-
+        setupNetworkCallback();
+        loadData();
     }
-    private void setUpPresenter() {
 
-        MealRepository mealRepository= MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(requireContext()));
-        homePresenter=new HomePresenterImpl(this,mealRepository);
+    private void initViews(View view) {
+        contentLayout = view.findViewById(R.id.content_layout);
+        animationView = view.findViewById(R.id.img_no_internet);
+        txtConnection = view.findViewById(R.id.txt_no_internet);
+        noInternetLayout = view.findViewById(R.id.no_internet_view);
+        btnRetry = view.findViewById(R.id.btn_retry);
+        txtConnection.setText("Connection Lost");
+        btnRetry.setOnClickListener(v -> {
+            if (isNetworkAvailable()) {
+                hideNoInternetLayout();
+                Toast.makeText(getContext(), "Connection Lost", Toast.LENGTH_SHORT).show();
+                loadData();
+            }
+        });
+
+        initRecyclerViews(view);
     }
+
     private void initRecyclerViews(View view) {
         categoryRV = view.findViewById(R.id.re_category);
         categoryRV.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -95,31 +103,109 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
 
         mealRV = view.findViewById(R.id.rv_gride_items);
         mealRV.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-        mealAdapter = new MealAdapter(requireContext(), new ArrayList<>(),this);
+        mealAdapter = new MealAdapter(requireContext(), new ArrayList<>(), this);
         mealRV.setAdapter(mealAdapter);
     }
 
+    private void setUpPresenter() {
+        MealRepository mealRepository = MealRepositoryImpl.getInstance(
+                MealRemoteDataSourceImpl.getInstance(),
+                MealLocalDataSourceImpl.getInstance(requireContext())
+        );
+        homePresenter = new HomePresenterImpl(this, mealRepository);
+    }
 
+     public void setupNetworkCallback() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        networkCallback = new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(Network network) {
+                if (getActivity() == null) return;
+                getActivity().runOnUiThread(() -> {
+                    hideNoInternetLayout();
+                    loadData();
+                });
+            }
+
+            @Override
+            public void onLost(Network network) {
+                if (getActivity() == null) return;
+                Log.d(TAG, "Network lost, calling showNoInternetLayout");
+                getActivity().runOnUiThread(() -> {
+                    showNoInternetLayout();
+                });
+            }
+        };
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            connectivityManager.registerDefaultNetworkCallback(networkCallback);
+        }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        }
+        return false;
+    }
+
+    private void loadData() {
+        if (isNetworkAvailable()) {
+            homePresenter.getMeals();
+            homePresenter.getCategories();
+        } else {
+            showNoInternetLayout();
+        }
+    }
+
+    private void showNoInternetLayout() {
+        if (contentLayout != null && noInternetLayout != null) {
+            Log.d(TAG, "Showing no internet layout");
+            contentLayout.setVisibility(View.GONE);
+            noInternetLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideNoInternetLayout() {
+        if (contentLayout != null && noInternetLayout != null) {
+            contentLayout.setVisibility(View.VISIBLE);
+            noInternetLayout.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public void showAllMealsData(List<MealModel> models) {
-       mealAdapter.setMeals(models);
-       mealAdapter.notifyDataSetChanged();
+        if (!isAdded()) return;
+        mealAdapter.setMeals(models);
+        mealAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showAllCategoryData(List<CategoryModel> categoryModels) {
-        Log.d("HomeFragment", "Categories received: " + categoryModels.size());
+        if (!isAdded()) return;
+        Log.d(TAG, "Categories received: " + categoryModels.size());
         categoryAdapter.setCategories(categoryModels);
-
     }
 
     @Override
     public void showErrorMsg(String err) {
-        AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
-        builder.setMessage(err).setTitle("An Error Occurred");
-        AlertDialog dialog=builder.create();
-        dialog.show();
+        if (!isAdded()) return;
+
+        if (!isNetworkAvailable()) {
+            showNoInternetLayout();
+            return;
+        }
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("An Error Occurred")
+                .setMessage(err)
+                .setPositiveButton("OK", null)
+                .show();
     }
 
     @Override
@@ -135,6 +221,24 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
     @Override
     public void onAddToPlannedMeal(PlannedMealEntity plannedMealEntity) {
         homePresenter.addToPlannedMeal(plannedMealEntity);
-        Toast.makeText(getContext(), "plannedMealEntity"+plannedMealEntity.getPlannedDate(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),
+                "plannedMealEntity" + plannedMealEntity.getPlannedDate(),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setupNetworkCallback();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (networkCallback != null) {
+            ConnectivityManager connectivityManager = (ConnectivityManager)
+                    requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            connectivityManager.unregisterNetworkCallback(networkCallback);
+        }
     }
 }

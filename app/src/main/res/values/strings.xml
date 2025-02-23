@@ -24,5 +24,6 @@
     <string name="ingredient">Ingredients :</string>
     <string name="instructions">Instructions :</string>
     <string name="youtube">Youtube :</string>
+    <string name="default_web_client_id">YOUR-WEB-CLIENT-ID</string>
 
 </resources>

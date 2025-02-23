@@ -62,6 +62,6 @@ public class SplashFragment extends Fragment {
 
                 Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_welcomFragment);
             }
-        }, 4500);
+        }, 3500);
     }
 }

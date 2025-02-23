@@ -12,7 +12,20 @@
           "package_name": "com.example.mealsapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "876673580683-qdnnpvt41a3u8mgtg6sj8semgk954gbl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mealsapp",
+            "certificate_hash": "13cca186b13c62224abb2150b26be416629c0a27"
+          }
+        },
+        {
+          "client_id": "876673580683-462r41t8drq3ns3qg4k4ke8ph5fnfe67.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDH536crycvYDxMIj0QJrWP5ZXruGpcofY"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "876673580683-462r41t8drq3ns3qg4k4ke8ph5fnfe67.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
