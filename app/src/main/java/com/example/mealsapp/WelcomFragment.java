@@ -55,7 +55,10 @@ public class WelcomFragment extends Fragment {
             public void onClick(View view) {
                 // Navigation.findNavController(view).navigate(R.id.action_welcomFragment_to_loginFragment);
 
-                Navigation.findNavController(view).navigate(R.id.action_welcomFragment_to_signUpFragment);
+                Navigation.findNavController(view).navigate(R.id.action_welcomFragment_to_homeFragment,null,
+                        new androidx.navigation.NavOptions.Builder()
+                                .setPopUpTo(R.id.homeFragment, true)
+                                .build());
             }
         });
     }

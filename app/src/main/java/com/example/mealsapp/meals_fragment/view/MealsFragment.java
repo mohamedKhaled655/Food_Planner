@@ -121,6 +121,11 @@ public class MealsFragment extends Fragment implements MealsView , OnAddFavClick
     }
 
     @Override
+    public String userId() {
+        return mealPresenter.getUserId();
+    }
+
+    @Override
     public void showAllMeals(List<MealModel> models) {
         mealAdapter.setMeals(models);
         mealAdapter.notifyDataSetChanged();

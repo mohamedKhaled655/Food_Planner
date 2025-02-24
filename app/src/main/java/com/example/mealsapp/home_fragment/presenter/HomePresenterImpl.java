@@ -10,6 +10,7 @@ import com.example.mealsapp.data.network.NetworkCallBackForCategory;
 import com.example.mealsapp.data.network.NetworkCallback;
 import com.example.mealsapp.data.repo.MealRepository;
 import com.example.mealsapp.home_fragment.view.HomeMealView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -22,10 +23,13 @@ public class HomePresenterImpl implements HomePresenter {
     private static final String TAG = "HomePresenterImpl";
    private HomeMealView homeMealView;
    private MealRepository repository;
+    private FirebaseAuth mAuth;
 
     public HomePresenterImpl(HomeMealView homeMealView, MealRepository repository) {
         this.homeMealView = homeMealView;
         this.repository = repository;
+        mAuth = FirebaseAuth.getInstance();
+        repository.setUserIdToSharedPref(mAuth.getUid());
     }
 
 
@@ -33,7 +37,7 @@ public class HomePresenterImpl implements HomePresenter {
     public void getMeals() {
         Single<List<MealModel>> remoteMeals = repository.getAllMeals();
         Flowable<List<MealEntity>> localFavorites = repository.getStoredFavMeals();
-
+        String currentUserId = getUserId();
         Single.zip(
                         remoteMeals,
                         localFavorites.firstOrError(),
@@ -41,7 +45,7 @@ public class HomePresenterImpl implements HomePresenter {
 
                             for (MealModel meal : meals) {
                                 for (MealEntity favMeal : favorites) {
-                                    if (meal.getIdMeal().equals(favMeal.getId())) {
+                                    if (meal.getIdMeal().equals(favMeal.getId())&&currentUserId.equals(favMeal.getUserId()) ) {
                                         meal.setFavorite(true);
                                         break;
                                     }
@@ -117,6 +121,16 @@ public class HomePresenterImpl implements HomePresenter {
                         () -> Log.i(TAG, "Meal added to plannedMeal"),
                         error -> Log.e(TAG, "Error adding Meal to plannedMeal", error)
                 );
+    }
+
+    @Override
+    public String getUserId() {
+        return repository.getUserIdFromSharedPref();
+    }
+
+    @Override
+    public void setUserId(String userId) {
+        repository.setUserIdToSharedPref(userId);
     }
 
 

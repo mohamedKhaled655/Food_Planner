@@ -76,6 +76,7 @@ public class CustomMealAdapter extends  RecyclerView.Adapter<CustomMealAdapter.C
         });
         MealEntity mealEntity = new MealEntity(
                 mealModel.getIdMeal(),
+                listener.userId(),
                 mealModel.getStrMeal(),
                 mealModel.getStrCategory(),
                 mealModel.getStrArea(),

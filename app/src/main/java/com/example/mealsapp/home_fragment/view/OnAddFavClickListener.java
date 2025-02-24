@@ -8,4 +8,6 @@ public interface OnAddFavClickListener extends  OnFavClickLisenter{
     void onRemoveFromFavorite(MealEntity mealEntity);
 
     void onAddToPlannedMeal(PlannedMealEntity plannedMealEntity);
+
+    String userId();
 }

@@ -5,4 +5,5 @@ import com.example.mealsapp.home_fragment.view.OnFavClickLisenter;
 
 public interface OnRemoveFavClickListener extends OnFavClickLisenter {
     void onRemoveFromFavorite(MealEntity meal);
+    String getUserId();
 }

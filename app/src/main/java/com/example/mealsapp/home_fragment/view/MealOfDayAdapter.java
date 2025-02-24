@@ -61,6 +61,7 @@ public class MealOfDayAdapter extends RecyclerView.Adapter<MealOfDayAdapter.Meal
         });
         MealEntity mealEntity = new MealEntity(
                 mealModel.getIdMeal(),
+                listener.userId(),
                 mealModel.getStrMeal(),
                 mealModel.getStrCategory(),
                 mealModel.getStrArea(),

@@ -52,4 +52,9 @@ public interface MealRepository {
     Flowable<List<PlannedMealEntity>> getAllPlannedMeals();
 
 
+    ///////
+    void setUserIdToSharedPref(String userId);
+    String getUserIdFromSharedPref();
+
+
 }

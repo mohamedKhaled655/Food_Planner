@@ -18,4 +18,9 @@ public interface MealLocalDataSource {
     Flowable<List<PlannedMealEntity>> getPlannedMealsByDate(String date);
     Flowable<List<PlannedMealEntity>> getAllPlannedMeals();
 
+    //////
+
+    void setUserIdToSharedPref(String userId);
+    String getUserIdFromSharedPref();
+
 }

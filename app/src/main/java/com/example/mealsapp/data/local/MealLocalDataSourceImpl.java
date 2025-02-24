@@ -16,6 +16,7 @@ import io.reactivex.rxjava3.core.Flowable;
 public class MealLocalDataSourceImpl implements MealLocalDataSource{
     private final MealDao mealDao;
     private final PlannedMealDao plannedMealDao;
+    private final SharedPreferenceHelper sharedPreferenceHelper;
     private Context context;
     private Flowable<List<MealEntity>> storedMeals;
     private static MealLocalDataSourceImpl mealLocalDataSource=null;
@@ -24,6 +25,7 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource{
         MealDatabase db=MealDatabase.getInstance(context.getApplicationContext());
         mealDao= db.mealDao();
         plannedMealDao= db.plannedMealDao();
+        sharedPreferenceHelper=SharedPreferenceHelper.getInstance(context.getApplicationContext());
         storedMeals=mealDao.getAllMeals();
     }
 
@@ -68,6 +70,16 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource{
     @Override
     public Flowable<List<PlannedMealEntity>> getAllPlannedMeals() {
         return plannedMealDao.getAllPlannedMeals();
+    }
+
+    @Override
+    public void setUserIdToSharedPref(String userId) {
+        sharedPreferenceHelper.setUserId(userId);
+    }
+
+    @Override
+    public String getUserIdFromSharedPref() {
+        return sharedPreferenceHelper.getUserId();
     }
 
 

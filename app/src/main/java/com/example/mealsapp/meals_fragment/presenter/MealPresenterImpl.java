@@ -6,6 +6,7 @@ import com.example.mealsapp.data.local.MealEntity;
 import com.example.mealsapp.data.repo.MealRepository;
 import com.example.mealsapp.home_fragment.view.HomeMealView;
 import com.example.mealsapp.meals_fragment.view.MealsView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -14,10 +15,13 @@ public class MealPresenterImpl implements MealPresenter{
     private static final String TAG = "MealPresenterImpl";
     private MealsView mealsView;
     private MealRepository repository;
+    private FirebaseAuth mAuth;
 
     public MealPresenterImpl(MealsView mealsView, MealRepository repository) {
         this.mealsView = mealsView;
         this.repository = repository;
+        mAuth = FirebaseAuth.getInstance();
+        repository.setUserIdToSharedPref(mAuth.getUid());
     }
 
     @Override
@@ -98,5 +102,10 @@ public class MealPresenterImpl implements MealPresenter{
                         () -> Log.i(TAG, "Meal remove from favorites"),
                         error -> Log.e(TAG, "Error removing Meal from favorites", error)
                 );
+    }
+
+    @Override
+    public String getUserId() {
+        return repository.getUserIdFromSharedPref();
     }
 }

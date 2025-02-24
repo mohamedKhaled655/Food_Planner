@@ -49,8 +49,12 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
         holder.favActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 ((OnRemoveFavClickListener)listener).onRemoveFromFavorite(mealEntity);
+
+
             }
+
         });
     }
     public void updateData(List<MealEntity>mealEntities){

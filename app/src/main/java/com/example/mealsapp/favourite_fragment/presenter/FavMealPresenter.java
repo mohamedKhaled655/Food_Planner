@@ -10,4 +10,7 @@ public interface FavMealPresenter {
     public void getFavMeals();
     public void removeFromFav(MealEntity meal);
     public void addMealFromFav(MealEntity meal);
+
+    String getUserId();
+
 }

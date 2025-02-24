@@ -15,6 +15,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mealsapp.data.local.MealLocalDataSourceImpl;
+import com.example.mealsapp.data.network.MealRemoteDataSourceImpl;
+import com.example.mealsapp.data.repo.MealRepository;
+import com.example.mealsapp.data.repo.MealRepositoryImpl;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,7 +58,7 @@ public class profileFragment extends Fragment {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            Log.i(TAG, "onViewCreated: " + currentUser.getUid());
+            Log.i(TAG, "onViewCreated: " + currentUser.getUid()+"name"+currentUser.getDisplayName());
             name.setText(currentUser.getEmail());
             Toast.makeText(getContext(),
                     currentUser.getEmail() + " id : " + currentUser.getUid(),
@@ -96,9 +100,11 @@ public class profileFragment extends Fragment {
     }
 
     private void navigateToLogin() {
-            Navigation.findNavController(rootView)
+      MealRepository repository= MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(getContext()));
+        repository.setUserIdToSharedPref(null);
+        Navigation.findNavController(rootView)
                     .navigate(
-                            R.id.action_profileFragment_to_LoginFragment,
+                            R.id.action_profileFragment_to_welcomFragment,
                             null,
                             new androidx.navigation.NavOptions.Builder()
                                     .setPopUpTo(R.id.profileFragment, true)

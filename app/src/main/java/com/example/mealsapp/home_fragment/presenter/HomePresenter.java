@@ -11,4 +11,7 @@ public interface HomePresenter {
 
     public void addToPlannedMeal(PlannedMealEntity plannedMealEntity);
 
+    String getUserId();
+    void setUserId(String userId);
+
 }

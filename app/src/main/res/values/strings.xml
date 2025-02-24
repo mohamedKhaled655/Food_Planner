@@ -26,5 +26,6 @@
     <string name="youtube">Youtube :</string>
     <string name="default_web_client_id">YOUR-WEB-CLIENT-ID</string>
     <string name="daily_inspiration">Daily Inspiration</string>
+    <string name="guest">Guest</string>
 
 </resources>

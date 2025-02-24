@@ -241,6 +241,11 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
     }
 
     @Override
+    public String userId() {
+        return homePresenter.getUserId();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         setupNetworkCallback();

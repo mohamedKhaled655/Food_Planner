@@ -7,7 +7,9 @@ import androidx.lifecycle.LiveData;
 import com.example.mealsapp.data.local.MealEntity;
 import com.example.mealsapp.data.repo.MealRepository;
 import com.example.mealsapp.favourite_fragment.view.FavoriteMealView;
+import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -18,16 +20,30 @@ public class FavMealPresenterImpl implements FavMealPresenter{
     private static final String TAG = "FavMealPresenterImpl";
     private FavoriteMealView favoriteMealView;
     private MealRepository repository;
+    private  FirebaseAuth mAuth;
 
     public FavMealPresenterImpl(FavoriteMealView favoriteMealView, MealRepository repository) {
         this.favoriteMealView = favoriteMealView;
         this.repository = repository;
+        mAuth = FirebaseAuth.getInstance();
+        repository.setUserIdToSharedPref(mAuth.getUid());
     }
 
     @Override
     public void getFavMeals() {
+        String currentUserId = getUserId();
 
         repository.getStoredFavMeals()
+                .map(mealsList -> {
+
+                    List<MealEntity> userFavMeals = new ArrayList<>();
+                    for (MealEntity meal : mealsList) {
+                        if (currentUserId.equals(meal.getUserId())) {
+                            userFavMeals.add(meal);
+                        }
+                    }
+                    return userFavMeals;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -77,4 +93,11 @@ public class FavMealPresenterImpl implements FavMealPresenter{
                       }
               );
     }
+
+    @Override
+    public String getUserId() {
+        return repository.getUserIdFromSharedPref();
+    }
+
+
 }

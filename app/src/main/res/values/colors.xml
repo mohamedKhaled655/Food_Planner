@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary_color">#BBBD4C0A</color>
+    <color name="primary_ripple">#9ABD4C0A</color>
+    <color name="secondary_color">#F2FF9D23</color>
+    <color name="thred_color">#E7DECC</color>
+    <color name="error_color">#740006</color>
+    <color name="background_color">#FEF9E1</color>
+    <color name="grey_color">#8E9098</color>
+    <color name="button_background">#DFB497</color>
+    <color name="button_ripple">#B3805C</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

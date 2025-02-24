@@ -146,4 +146,14 @@ public class MealRepositoryImpl implements MealRepository{
     public Flowable<List<PlannedMealEntity>> getAllPlannedMeals() {
         return mealLocalDataSource.getAllPlannedMeals();
     }
+
+    @Override
+    public void setUserIdToSharedPref(String userId) {
+        mealLocalDataSource.setUserIdToSharedPref(userId);
+    }
+
+    @Override
+    public String getUserIdFromSharedPref() {
+        return mealLocalDataSource.getUserIdFromSharedPref();
+    }
 }

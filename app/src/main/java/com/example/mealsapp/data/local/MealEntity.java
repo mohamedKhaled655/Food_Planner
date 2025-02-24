@@ -10,6 +10,7 @@ public class MealEntity {
     @PrimaryKey
 
     private String id;
+    private String userId;
     private String name;
     private String category;
     private String area;
@@ -18,7 +19,7 @@ public class MealEntity {
     private String youtubeUrl;
     private boolean isFavorite;
 
-    public MealEntity(String id, String name, String category, String area, String instructions, String thumbnail, String youtubeUrl, boolean isFavorite) {
+    public MealEntity(String id,String userId, String name, String category, String area, String instructions, String thumbnail, String youtubeUrl, boolean isFavorite) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -27,6 +28,15 @@ public class MealEntity {
         this.thumbnail = thumbnail;
         this.youtubeUrl = youtubeUrl;
         this.isFavorite = isFavorite;
+        this.userId=userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getId() {

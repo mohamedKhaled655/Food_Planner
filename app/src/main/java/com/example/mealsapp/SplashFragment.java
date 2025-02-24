@@ -13,8 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.mealsapp.data.local.MealLocalDataSourceImpl;
+import com.example.mealsapp.data.network.MealRemoteDataSourceImpl;
+import com.example.mealsapp.data.repo.MealRepository;
+import com.example.mealsapp.data.repo.MealRepositoryImpl;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -25,6 +30,7 @@ public class SplashFragment extends Fragment {
 
     private static final String TAG = "SplashFragment";
     private FirebaseAuth mAuth;
+    private MealRepository repository;
     private LottieAnimationView animationView;
 
     public SplashFragment() {
@@ -35,6 +41,7 @@ public class SplashFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+        repository=MealRepositoryImpl.getInstance(MealRemoteDataSourceImpl.getInstance(), MealLocalDataSourceImpl.getInstance(getContext()));
     }
 
     @Override
@@ -56,7 +63,10 @@ public class SplashFragment extends Fragment {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             //Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_welcomFragment);
             FirebaseUser currentUser = mAuth.getCurrentUser();
+
             if (currentUser != null) {
+                repository.setUserIdToSharedPref(currentUser.getUid());
+
                 Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_homeFragment);
             } else {
 

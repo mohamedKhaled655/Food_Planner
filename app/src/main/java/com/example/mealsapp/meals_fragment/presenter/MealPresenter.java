@@ -9,4 +9,6 @@ public interface MealPresenter {
 
     public void addMealToFav(MealEntity meal);
     public void removeMealToFav(MealEntity meal);
+
+    String getUserId();
 }
