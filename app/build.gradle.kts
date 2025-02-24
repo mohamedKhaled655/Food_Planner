@@ -57,6 +57,9 @@ dependencies {
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
+    //firestore
+    implementation("com.google.firebase:firebase-firestore")
+
     implementation ("com.google.android.material:material:<version>")
     //lottie
     implementation ("com.airbnb.android:lottie:6.1.0")
@@ -77,7 +80,6 @@ dependencies {
     implementation ("androidx.room:room-rxjava3:2.6.1")
 
     //carousel
-
     implementation ("com.github.sparrow007:carouselrecyclerview:1.2.6")
 
 }

@@ -69,6 +69,7 @@ public class FavMealPresenterImpl implements FavMealPresenter{
                 .subscribe(
                         () -> {
                             Log.d(TAG, "Successfully removed: " + meal.getId());
+                            syncFavoritesToCloud();
                         },
                         error -> {
                             favoriteMealView.showErrorMsg("Failed to remove: " + error.getMessage());
@@ -80,12 +81,15 @@ public class FavMealPresenterImpl implements FavMealPresenter{
 
     @Override
     public void addMealFromFav(MealEntity meal) {
+        meal.setUserId(getUserId());
+        meal.setFavorite(true);
       repository.addMealToFav(meal)
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(
                       () -> {
                           Log.d(TAG, "Successfully Added: " + meal.getId());
+                          syncFavoritesToCloud();
                       },
                       error -> {
                           favoriteMealView.showErrorMsg("Failed to Added: " + error.getMessage());
@@ -97,6 +101,48 @@ public class FavMealPresenterImpl implements FavMealPresenter{
     @Override
     public String getUserId() {
         return repository.getUserIdFromSharedPref();
+    }
+
+    @Override
+    public void syncFavoritesToCloud() {
+        repository.syncFavoritesToCloud()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {
+                            if (favoriteMealView != null) {
+                                favoriteMealView.showMessage("Favorites backed up successfully");
+                            }
+                        },
+                        error -> {
+                            if (favoriteMealView != null) {
+                                favoriteMealView.showMessage("Backup failed: " + error.getMessage());
+                            }
+                            Log.e(TAG, "Failed to backup favorites", error);
+                        }
+                );
+    }
+
+    @Override
+    public void restoreFavoritesFromCloud() {
+        repository.restoreFavoritesFromCloud()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {
+                            if (favoriteMealView != null) {
+                                favoriteMealView.showMessage("Favorites restored successfully");
+                                // Refresh the view with restored favorites
+                                getFavMeals();
+                            }
+                        },
+                        error -> {
+                            if (favoriteMealView != null) {
+                                favoriteMealView.showErrorMsg("Restore failed: " + error.getMessage());
+                            }
+                            Log.e(TAG, "Failed to restore favorites", error);
+                        }
+                );
     }
 
 

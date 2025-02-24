@@ -12,5 +12,8 @@ public interface FavMealPresenter {
     public void addMealFromFav(MealEntity meal);
 
     String getUserId();
+    //////
+    public void syncFavoritesToCloud();
+    public void restoreFavoritesFromCloud();
 
 }

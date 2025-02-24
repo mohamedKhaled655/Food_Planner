@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.mealsapp.R;
@@ -41,7 +42,8 @@ public class FavouritesFragment extends Fragment implements OnRemoveFavClickList
     private FavouriteAdapter adapter;
     RecyclerView recyclerView;
     ConstraintLayout constraintLayoutForLogin;
-
+    private ImageButton btnBackupFavorites;
+    private ImageButton btnRestoreFavorites;
     FavMealPresenter favMealPresenter;
     public FavouritesFragment() {
         // Required empty public constructor
@@ -64,6 +66,8 @@ public class FavouritesFragment extends Fragment implements OnRemoveFavClickList
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        btnBackupFavorites = view.findViewById(R.id.btnBackupFavorites);
+        btnRestoreFavorites = view.findViewById(R.id.btnRestoreFavorites);
         constraintLayoutForLogin=view.findViewById(R.id.cons_login_content);
         recyclerView=view.findViewById(R.id.recycler_view_fav);
         setUpPresenter();
@@ -89,6 +93,14 @@ public class FavouritesFragment extends Fragment implements OnRemoveFavClickList
             recyclerView.setAdapter(adapter);
             favMealPresenter.getFavMeals();
             Toast.makeText(getContext(), "token :" + userId, Toast.LENGTH_SHORT).show();
+
+            btnBackupFavorites.setOnClickListener(v -> {
+                favMealPresenter.syncFavoritesToCloud();
+            });
+
+            btnRestoreFavorites.setOnClickListener(v -> {
+                favMealPresenter.restoreFavoritesFromCloud();
+            });
         }
 
 
@@ -112,6 +124,11 @@ public class FavouritesFragment extends Fragment implements OnRemoveFavClickList
         builder.setMessage(err).setTitle("An Error Occurred");
         AlertDialog dialog=builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

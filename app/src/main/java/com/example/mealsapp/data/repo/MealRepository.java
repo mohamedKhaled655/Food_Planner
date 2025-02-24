@@ -56,5 +56,9 @@ public interface MealRepository {
     void setUserIdToSharedPref(String userId);
     String getUserIdFromSharedPref();
 
+    ////
+    Completable syncFavoritesToCloud();
+     Completable restoreFavoritesFromCloud();
+
 
 }

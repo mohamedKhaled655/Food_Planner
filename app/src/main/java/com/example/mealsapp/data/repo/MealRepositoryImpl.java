@@ -1,5 +1,7 @@
 package com.example.mealsapp.data.repo;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 
 import com.example.mealsapp.data.Models.AreaModel;
@@ -8,6 +10,7 @@ import com.example.mealsapp.data.Models.CategorySearchModel;
 import com.example.mealsapp.data.Models.IngredientModel;
 import com.example.mealsapp.data.Models.MealDetailsModel;
 import com.example.mealsapp.data.Models.MealModel;
+import com.example.mealsapp.data.local.FirebaseSyncService;
 import com.example.mealsapp.data.local.MealEntity;
 import com.example.mealsapp.data.local.MealLocalDataSource;
 import com.example.mealsapp.data.local.PlannedMealEntity;
@@ -18,6 +21,7 @@ import com.example.mealsapp.data.network.NetworkCallNBackForIngredient;
 import com.example.mealsapp.data.network.NetworkCallNBackForSearchCategory;
 import com.example.mealsapp.data.network.NetworkCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -25,8 +29,11 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 
 public class MealRepositoryImpl implements MealRepository{
+    private static final String TAG = "MealRepositoryImpl";
     MealRemoteDataSource mealRemoteDataSource;
     MealLocalDataSource mealLocalDataSource;
+
+    private FirebaseSyncService syncService;
     private static MealRepositoryImpl repo=null;
     public static MealRepositoryImpl getInstance(MealRemoteDataSource remoteDataSource,MealLocalDataSource localDataSource){
         if(repo==null){
@@ -150,10 +157,66 @@ public class MealRepositoryImpl implements MealRepository{
     @Override
     public void setUserIdToSharedPref(String userId) {
         mealLocalDataSource.setUserIdToSharedPref(userId);
+        syncService = new FirebaseSyncService(userId);
     }
 
     @Override
     public String getUserIdFromSharedPref() {
         return mealLocalDataSource.getUserIdFromSharedPref();
+    }
+
+    @Override
+    public Completable syncFavoritesToCloud() {
+        final String userId = getUserIdFromSharedPref();
+        if (userId.isEmpty()) {
+            return Completable.error(new IllegalStateException("User not logged in"));
+        }
+
+        if (syncService == null) {
+            syncService = new FirebaseSyncService(userId);
+        }
+        return getStoredFavMeals()
+                .firstElement()
+                .flatMapCompletable(allMeals -> {
+
+                    List<MealEntity> userMeals = new ArrayList<>();
+                    for (MealEntity meal : allMeals) {
+                        if (userId.equals(meal.getUserId()) && meal.isFavorite()) {
+                            userMeals.add(meal);
+                        }
+                    }
+                    return syncService.backupUserFavorites(userMeals);
+                });
+    }
+
+    @Override
+    public Completable restoreFavoritesFromCloud() {
+        final String userId = getUserIdFromSharedPref();
+        if (userId.isEmpty()) {
+            return Completable.error(new IllegalStateException("User not logged in"));
+        }
+
+        if (syncService == null) {
+            syncService = new FirebaseSyncService(userId);
+        }
+        return syncService.restoreUserFavorites()
+                .flatMapCompletable(cloudMeals -> {
+                    if (cloudMeals.isEmpty()) {
+                        Log.d(TAG, "No meals to restore from cloud");
+                        return Completable.complete();
+                    }
+
+                    return Completable.fromAction(() -> {
+                        for (MealEntity meal : cloudMeals) {
+
+                            meal.setUserId(userId);
+
+                            meal.setFavorite(true);
+
+                            mealLocalDataSource.addMealToFavourites(meal);
+                        }
+                        Log.d(TAG, "Restored " + cloudMeals.size() + " meals from cloud");
+                    });
+                });
     }
 }
