@@ -40,11 +40,6 @@
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
-        <argument
-            android:name="tilte"
-            app:argType="string"
-            android:defaultValue="Welcome"
-            />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -100,7 +95,11 @@
         android:id="@+id/profileFragment"
         android:name="com.example.mealsapp.profileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mealsFragment"
         android:name="com.example.mealsapp.meals_fragment.view.MealsFragment"

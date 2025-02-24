@@ -1,80 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/content_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        android:padding="12dp"
+
+        >
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/drawer" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/imageView5"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginEnd="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView2"
             app:srcCompat="@drawable/search" />
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/txt_cat_name"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/home_loader"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="looding.json"
+        app:lottie_loop="true" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:paddingTop="72dp">
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:text="@string/category"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView2" />
+            android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/re_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/txt_cat_name"
-            app:layout_constraintTop_toBottomOf="@id/txt_cat_name" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_gride_items"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+                <TextView
+                    android:id="@+id/txt_insp_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:textStyle="bold"
+                    android:text="@string/daily_inspiration"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/re_category" />
+                <com.jackandphantom.carouselrecyclerview.CarouselRecyclerview
+                    android:id="@+id/randomRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/white"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintTop_toBottomOf="@id/txt_insp_name"
+                    tools:listitem="@layout/item_random_meal" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/txt_cat_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:textStyle="bold"
+                    android:text="@string/category"
+                    app:layout_constraintTop_toBottomOf="@id/randomRecycler" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/re_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintTop_toBottomOf="@id/txt_cat_name" />
 
 
-    <include
-        android:id="@+id/no_internet_view"
-        layout="@layout/no_internet_layout"
-        android:visibility="gone" />
+                <TextView
+                    android:id="@+id/txt_meal_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:textStyle="bold"
+                    android:text="Meals :"
+                    app:layout_constraintTop_toBottomOf="@id/re_category" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_gride_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintTop_toBottomOf="@id/txt_meal_name" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/no_internet_view"
+                layout="@layout/no_internet_layout"
+                android:visibility="gone" />
+
+        </FrameLayout>
+    </ScrollView>
 
 </FrameLayout>

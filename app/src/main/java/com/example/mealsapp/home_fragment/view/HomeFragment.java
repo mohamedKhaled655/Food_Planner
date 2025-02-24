@@ -38,6 +38,7 @@ import com.example.mealsapp.data.repo.MealRepository;
 import com.example.mealsapp.data.repo.MealRepositoryImpl;
 import com.example.mealsapp.home_fragment.presenter.HomePresenter;
 import com.example.mealsapp.home_fragment.presenter.HomePresenterImpl;
+import com.jackandphantom.carouselrecyclerview.CarouselRecyclerview;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,12 +52,14 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
 
     private RecyclerView categoryRV, mealRV;
     private CategoryAdapter categoryAdapter;
+    private MealOfDayAdapter mealOfDayAdapter;
+    private CarouselRecyclerview carouselRecyclerview;
     private MealAdapter mealAdapter;
     private HomePresenter homePresenter;
     private View contentLayout;
     private View noInternetLayout;
     private Button btnRetry;
-    private LottieAnimationView animationView;
+    private LottieAnimationView animationView,loaderView;
     private TextView txtConnection;
     private ConnectivityManager.NetworkCallback networkCallback;
 
@@ -80,12 +83,15 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
     private void initViews(View view) {
         contentLayout = view.findViewById(R.id.content_layout);
         animationView = view.findViewById(R.id.img_no_internet);
+        loaderView = view.findViewById(R.id.home_loader);
+        loaderView.setVisibility(View.GONE);
         txtConnection = view.findViewById(R.id.txt_no_internet);
         noInternetLayout = view.findViewById(R.id.no_internet_view);
         btnRetry = view.findViewById(R.id.btn_retry);
         txtConnection.setText("Connection Lost");
         btnRetry.setOnClickListener(v -> {
             if (isNetworkAvailable()) {
+                loaderView.setVisibility(View.VISIBLE);
                 hideNoInternetLayout();
                 Toast.makeText(getContext(), "Connection Lost", Toast.LENGTH_SHORT).show();
                 loadData();
@@ -96,6 +102,10 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
     }
 
     private void initRecyclerViews(View view) {
+        carouselRecyclerview=view.findViewById(R.id.randomRecycler);
+
+        mealOfDayAdapter=new MealOfDayAdapter(requireContext(), new ArrayList<>(), this);
+        carouselRecyclerview.setAdapter(mealOfDayAdapter);
         categoryRV = view.findViewById(R.id.re_category);
         categoryRV.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         categoryAdapter = new CategoryAdapter(getContext(), new ArrayList<>());
@@ -156,6 +166,7 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
 
     private void loadData() {
         if (isNetworkAvailable()) {
+            loaderView.setVisibility(View.VISIBLE);
             homePresenter.getMeals();
             homePresenter.getCategories();
         } else {
@@ -181,8 +192,11 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
     @Override
     public void showAllMealsData(List<MealModel> models) {
         if (!isAdded()) return;
+        loaderView.setVisibility(View.GONE);
         mealAdapter.setMeals(models);
+        mealOfDayAdapter.setMeals(models);
         mealAdapter.notifyDataSetChanged();
+        mealOfDayAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -195,7 +209,7 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
     @Override
     public void showErrorMsg(String err) {
         if (!isAdded()) return;
-
+        loaderView.setVisibility(View.GONE);
         if (!isNetworkAvailable()) {
             showNoInternetLayout();
             return;
