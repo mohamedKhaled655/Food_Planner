@@ -67,10 +67,16 @@ public class SplashFragment extends Fragment {
             if (currentUser != null) {
                 repository.setUserIdToSharedPref(currentUser.getUid());
 
-                Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_homeFragment);
+                Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_homeFragment, null,
+                        new androidx.navigation.NavOptions.Builder()
+                                .setPopUpTo(R.id.splashFragment, true)
+                                .build());
             } else {
 
-                Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_welcomFragment);
+                Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_welcomFragment, null,
+                        new androidx.navigation.NavOptions.Builder()
+                                .setPopUpTo(R.id.splashFragment, true)
+                                .build());
             }
         }, 3500);
     }

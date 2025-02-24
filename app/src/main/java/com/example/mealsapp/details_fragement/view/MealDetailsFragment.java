@@ -1,5 +1,7 @@
 package com.example.mealsapp.details_fragement.view;
 
+import static android.view.View.GONE;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,9 +22,11 @@ import android.webkit.WebView;
 import android.webkit.WebSettings;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.Models.MealDetailsModel;
@@ -46,6 +50,8 @@ public class MealDetailsFragment extends Fragment implements DetailsMealView {
     private RecyclerView recyclerView;
     ImageButton img_arrowBack;
     WebView webView;
+    private LottieAnimationView loaderAnimation;
+    ScrollView scrollView;
 
     public MealDetailsFragment() {
         // Required empty public constructor
@@ -66,7 +72,10 @@ public class MealDetailsFragment extends Fragment implements DetailsMealView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        loaderAnimation = view.findViewById(R.id.home_loader);
+        loaderAnimation.setVisibility(View.VISIBLE);
+        scrollView=view.findViewById(R.id.scroll_details_id);
+        scrollView.setVisibility(GONE);
         imageView = view.findViewById(R.id.img_info_image);
         imgCountry = view.findViewById(R.id.img_country);
         webView = view.findViewById(R.id.video_title);
@@ -119,6 +128,8 @@ public class MealDetailsFragment extends Fragment implements DetailsMealView {
 
     @Override
     public void showAllMealsDetails(List<MealDetailsModel> models) {
+        loaderAnimation.setVisibility(GONE);
+        scrollView.setVisibility(View.VISIBLE);
         Log.d(TAG, "MealDetailsModel received: " + models.toString());
         Toast.makeText(getContext(), "MealDetailsModel received:" + models.get(0).getIngredients(), Toast.LENGTH_SHORT).show();
 
@@ -162,6 +173,7 @@ public class MealDetailsFragment extends Fragment implements DetailsMealView {
 
     @Override
     public void showErrorMsg(String err) {
+        loaderAnimation.setVisibility(View.GONE);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(err).setTitle("An Error Occurred");
         AlertDialog dialog = builder.create();

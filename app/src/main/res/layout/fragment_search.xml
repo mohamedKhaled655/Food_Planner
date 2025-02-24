@@ -3,11 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
     android:background="#F5F5F5">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +23,7 @@
             android:layout_margin="16dp"
             android:text="@string/search"
             android:textSize="24sp"
-
+            android:textColor="@color/primary_color"
             android:textStyle="bold" />
 
 
@@ -43,6 +46,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:backgroundTint="@color/primary_color"
                     android:src="@drawable/search" />
 
                 <EditText
@@ -61,7 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:text="@string/search_by_ingredients"
+            android:text="Search By : "
+            android:textColor="@color/grey_color"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -116,7 +121,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_search_ingredients"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
             android:layout_margin="8dp" />

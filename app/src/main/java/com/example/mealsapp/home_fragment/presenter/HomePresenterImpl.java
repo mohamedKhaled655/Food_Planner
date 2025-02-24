@@ -44,8 +44,10 @@ public class HomePresenterImpl implements HomePresenter {
                         (meals, favorites) -> {
 
                             for (MealModel meal : meals) {
+
                                 for (MealEntity favMeal : favorites) {
-                                    if (meal.getIdMeal().equals(favMeal.getId())&&currentUserId.equals(favMeal.getUserId()) ) {
+                                    if (meal.getIdMeal() != null && favMeal.getId() != null && meal.getIdMeal().equals(favMeal.getId()) &&
+                                            currentUserId != null && currentUserId.equals(favMeal.getUserId())) {
                                         meal.setFavorite(true);
                                         break;
                                     }

@@ -93,9 +93,9 @@ public class SearchFragment extends Fragment implements SearchMealView{
         searchEditText = view.findViewById(R.id.search_edit_text);
         loadingIndicator=view.findViewById(R.id.loading_indicator);
         setUpPresenter();
-        searchPresenter.getSearchedCategories();
+        //searchPresenter.getSearchedCategories();
         searchPresenter.getSearchedIngredient();
-        searchPresenter.getSearchedArea();
+        //searchPresenter.getSearchedArea();
         setUpFilterChips();
         setupSearchEditText();
     }
