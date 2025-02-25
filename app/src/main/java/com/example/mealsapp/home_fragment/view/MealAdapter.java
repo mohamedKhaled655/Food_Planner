@@ -112,6 +112,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
                         PlannedMealEntity plannedMeal = new PlannedMealEntity(
                                 plannedMealId,
+                                listener.userId(),
                                 mealModel.getIdMeal(),
                                 mealModel.getStrMeal(),
                                 mealModel.getStrCategory(),

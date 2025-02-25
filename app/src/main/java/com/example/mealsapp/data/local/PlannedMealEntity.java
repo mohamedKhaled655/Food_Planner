@@ -10,6 +10,7 @@ public class PlannedMealEntity {
     @NonNull
     private String id;
     private String mealId;
+    private String userId;
     private String mealName;
     private String category;
     private String area;
@@ -18,7 +19,7 @@ public class PlannedMealEntity {
     private String youtubeUrl;
     private String plannedDate;
 
-    public PlannedMealEntity(@NonNull String id, String mealId, String mealName, String category,
+    public PlannedMealEntity(@NonNull String id,String userId, String mealId, String mealName, String category,
                              String area, String instructions, String thumbUrl,
                              String youtubeUrl, String plannedDate) {
         this.id = id;
@@ -30,6 +31,15 @@ public class PlannedMealEntity {
         this.thumbUrl = thumbUrl;
         this.youtubeUrl = youtubeUrl;
         this.plannedDate = plannedDate;
+        this.userId=userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @NonNull

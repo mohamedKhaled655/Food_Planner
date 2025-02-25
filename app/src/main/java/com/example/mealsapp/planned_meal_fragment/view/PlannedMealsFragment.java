@@ -1,16 +1,22 @@
 package com.example.mealsapp.planned_meal_fragment.view;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +46,7 @@ public class PlannedMealsFragment extends Fragment implements OnRemovePlannedCli
     private RecyclerView recyclerView;
     private PlannedMealPresenter plannedMealPresenter;
     private String date;
+    ConstraintLayout constraintLayoutForLogin;
 
     public PlannedMealsFragment() {
         // Required empty public constructor
@@ -57,7 +64,7 @@ public class PlannedMealsFragment extends Fragment implements OnRemovePlannedCli
         calendar = view.findViewById(R.id.calendar);
         dateView = view.findViewById(R.id.date_view);
         recyclerView = view.findViewById(R.id.rv_planned_meal);
-
+        constraintLayoutForLogin=view.findViewById(R.id.cons_login_content_for_plan);
 
         SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy", Locale.getDefault());
 
@@ -71,12 +78,38 @@ public class PlannedMealsFragment extends Fragment implements OnRemovePlannedCli
             showPlannedMealsByDate(date);
         });
 
-        adapter = new PlannedMealAdapter(getContext(), new ArrayList<>(), this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
-
         setUpPresenter();
-        showPlannedMealsByDate(date);
+        String userId = plannedMealPresenter.getUserId();
+        if(userId == null || userId.isEmpty()){
+            constraintLayoutForLogin.setVisibility(VISIBLE);
+            calendar.setVisibility(GONE);
+            recyclerView.setVisibility(GONE);
+            dateView.setVisibility(GONE);
+            Button btnLogin=view.findViewById(R.id.btn_needLogin);
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Navigation.findNavController(view).navigate(R.id.action_plannedMealsFragment_to_LoginFragment,null,
+                            new androidx.navigation.NavOptions.Builder()
+                                    .setPopUpTo(R.id.plannedMealsFragment, true)
+                                    .build());
+                }
+            });
+            Toast.makeText(getContext(), "Needed To Login to show fav", Toast.LENGTH_SHORT).show();
+        }else{
+            constraintLayoutForLogin.setVisibility(GONE);
+            calendar.setVisibility(VISIBLE);
+            recyclerView.setVisibility(VISIBLE);
+            dateView.setVisibility(VISIBLE);
+            adapter = new PlannedMealAdapter(getContext(), new ArrayList<>(), this);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(adapter);
+
+
+            showPlannedMealsByDate(date);
+            Toast.makeText(getContext(), "token :" + userId, Toast.LENGTH_SHORT).show();
+
+        }
 
     }
 
@@ -91,6 +124,11 @@ public class PlannedMealsFragment extends Fragment implements OnRemovePlannedCli
     @Override
     public void onRemoveFromPlannedMeal(PlannedMealEntity plannedMealEntity) {
         plannedMealPresenter.removeFromFav(plannedMealEntity);
+    }
+
+    @Override
+    public String getUserId() {
+        return plannedMealPresenter.getUserId();
     }
 
     @Override

@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import com.example.mealsapp.data.local.MealEntity;
 import com.example.mealsapp.data.local.PlannedMealEntity;
 
-@Database(entities = {MealEntity.class, PlannedMealEntity.class},version = 5)
+@Database(entities = {MealEntity.class, PlannedMealEntity.class},version = 6)
 public abstract class MealDatabase extends RoomDatabase {
     private static MealDatabase instance;
    public abstract MealDao mealDao();

@@ -50,7 +50,7 @@
                 android:drawableStart="@drawable/person"
                 android:drawablePadding="8dp"
                 android:gravity="center"
-                android:text="No Name"
+                android:text="@string/guest"
                 android:textColor="@color/primary_color"
                 android:textSize="24sp"
                 android:textStyle="bold" />

@@ -7,4 +7,6 @@ public interface PlannedMealPresenter {
     public void getPlannedMealsByData(String data);
     public void getPlannedMeals();
     public void removeFromFav(PlannedMealEntity meal);
+
+    String getUserId();
 }

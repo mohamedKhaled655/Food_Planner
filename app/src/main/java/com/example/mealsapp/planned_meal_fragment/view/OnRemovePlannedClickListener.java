@@ -5,4 +5,5 @@ import com.example.mealsapp.data.local.PlannedMealEntity;
 
 public interface OnRemovePlannedClickListener {
     void onRemoveFromPlannedMeal(PlannedMealEntity plannedMealEntity);
+    String getUserId();
 }
