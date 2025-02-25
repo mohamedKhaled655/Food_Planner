@@ -13,5 +13,9 @@ public interface HomePresenter {
 
     String getUserId();
     void setUserId(String userId);
-
+////////////
+void startNetworkMonitoring();
+    void stopNetworkMonitoring();
+    boolean isNetworkAvailable();
+    void loadData();
 }

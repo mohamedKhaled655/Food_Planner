@@ -1,5 +1,11 @@
 package com.example.mealsapp.home_fragment.presenter;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.example.mealsapp.data.Models.CategoryModel;
@@ -24,6 +30,7 @@ public class HomePresenterImpl implements HomePresenter {
    private HomeMealView homeMealView;
    private MealRepository repository;
     private FirebaseAuth mAuth;
+    private ConnectivityManager.NetworkCallback networkCallback;
 
     public HomePresenterImpl(HomeMealView homeMealView, MealRepository repository) {
         this.homeMealView = homeMealView;
@@ -133,6 +140,65 @@ public class HomePresenterImpl implements HomePresenter {
     @Override
     public void setUserId(String userId) {
         repository.setUserIdToSharedPref(userId);
+    }
+
+    @Override
+    public void startNetworkMonitoring() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                homeMealView.getViewContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        networkCallback = new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(Network network) {
+
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    homeMealView.hideNoInternetLayout();
+                    loadData();
+                });
+            }
+
+            @Override
+            public void onLost(Network network) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    homeMealView.showNoInternetLayout();
+                });
+            }
+        };
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            connectivityManager.registerDefaultNetworkCallback(networkCallback);
+        }
+    }
+
+    @Override
+    public void stopNetworkMonitoring() {
+        if (networkCallback != null) {
+            ConnectivityManager connectivityManager = (ConnectivityManager)
+                    homeMealView.getViewContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            connectivityManager.unregisterNetworkCallback(networkCallback);
+        }
+    }
+
+    @Override
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                homeMealView.getViewContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        }
+        return false;
+    }
+
+    @Override
+    public void loadData() {
+        if (isNetworkAvailable()) {
+            homeMealView.showLoading();
+            getMeals();
+            getCategories();
+        } else {
+            homeMealView.showNoInternetLayout();
+        }
     }
 
 

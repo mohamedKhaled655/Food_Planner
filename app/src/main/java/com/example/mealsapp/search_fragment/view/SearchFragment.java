@@ -97,14 +97,15 @@ public class SearchFragment extends Fragment implements SearchMealView{
         searchPresenter.getSearchedIngredient();
         //searchPresenter.getSearchedArea();
         setUpFilterChips();
+        showLoading();
         setupSearchEditText();
     }
-    private void showLoading() {
+     public void showLoading() {
         loadingIndicator.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
     }
 
-    private void hideLoading() {
+     public void hideLoading() {
         loadingIndicator.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
@@ -126,45 +127,17 @@ public class SearchFragment extends Fragment implements SearchMealView{
     private void filterResults(String query) {
         switch (currentFilter) {
             case "Category":
-                filterCategories(query);
+                searchPresenter.filterCategoriesByQuery(query);
                 break;
             case "Country":
-                filterAreas(query);
+                searchPresenter.filterAreasByQuery(query);
                 break;
             case "Ingredient":
-                filterIngredients(query);
+                searchPresenter.filterIngredientsByQuery(query);
                 break;
         }
     }
-    private void filterCategories(String query) {
-        List<CategorySearchModel> filteredList = new ArrayList<>();
-        for (CategorySearchModel category : originalCategoryList) {
-            if (category.getStrCategory().toLowerCase().contains(query.toLowerCase())) {
-                filteredList.add(category);
-            }
-        }
-        searchAdapter.setCategories(filteredList);
-    }
 
-    private void filterAreas(String query) {
-        List<AreaModel> filteredList = new ArrayList<>();
-        for (AreaModel area : originalAreaList) {
-            if (area.getStrArea().toLowerCase().contains(query.toLowerCase())) {
-                filteredList.add(area);
-            }
-        }
-        areaAdapter.setAreas(filteredList);
-    }
-
-    private void filterIngredients(String query) {
-        List<IngredientModel> filteredList = new ArrayList<>();
-        for (IngredientModel ingredient : originalIngredientList) {
-            if (ingredient.getStrIngredient().toLowerCase().contains(query.toLowerCase())) {
-                filteredList.add(ingredient);
-            }
-        }
-        ingredientAdapter.setIngredients(filteredList);
-    }
 
     private void setUpPresenter() {
 
@@ -180,6 +153,7 @@ public class SearchFragment extends Fragment implements SearchMealView{
                     currentFilter = chip.getText().toString();
                     searchEditText.setText("");
                     showLoading();
+
                     switch (currentFilter) {
                         case "Category":
                             recyclerView.setAdapter(searchAdapter);
@@ -198,15 +172,12 @@ public class SearchFragment extends Fragment implements SearchMealView{
             });
         }
     }
-    private List<CategorySearchModel> originalCategoryList = new ArrayList<>();
-    private List<AreaModel> originalAreaList = new ArrayList<>();
-    private List<IngredientModel> originalIngredientList = new ArrayList<>();
+
 
     @Override
     public void showSearchByCategory(List<CategorySearchModel> models) {
         hideLoading();
         if (models != null) {
-            originalCategoryList = new ArrayList<>(models);
             searchAdapter.setCategories(models);
         }
     }
@@ -215,7 +186,6 @@ public class SearchFragment extends Fragment implements SearchMealView{
     public void showSearchByArea(List<AreaModel> models) {
         hideLoading();
         if (models != null) {
-            originalAreaList = new ArrayList<>(models);
             areaAdapter.setAreas(models);
         }
     }
@@ -224,13 +194,19 @@ public class SearchFragment extends Fragment implements SearchMealView{
     public void showSearchByIngredient(List<IngredientModel> models) {
         hideLoading();
         if (models != null) {
-            originalIngredientList = new ArrayList<>(models);
             ingredientAdapter.setIngredients(models);
         }
     }
 
     @Override
     public void showErrorMsg(String err) {
-
+        Toast.makeText(requireContext(), err, Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (searchPresenter != null) {
+            searchPresenter.onDestroy();
+        }
     }
 }

@@ -4,17 +4,15 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkInfo;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.constraintlayout.widget.ConstraintLayout;
+
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,11 +41,11 @@ import com.example.mealsapp.home_fragment.presenter.HomePresenter;
 import com.example.mealsapp.home_fragment.presenter.HomePresenterImpl;
 import com.jackandphantom.carouselrecyclerview.CarouselRecyclerview;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Response;
+
 
 
 public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClickListener {
@@ -65,7 +63,7 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
     private LottieAnimationView animationView,loaderView;
     private TextView txtConnection;
     private TextView txt_insp,txt_cat,txt_meal;
-    private ConnectivityManager.NetworkCallback networkCallback;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,10 +78,8 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
 
         initViews(view);
         setUpPresenter();
-        setupNetworkCallback();
-        loadData();
-
-        
+        homePresenter.startNetworkMonitoring();
+        homePresenter.loadData();
     }
 
     private void initViews(View view) {
@@ -99,11 +95,11 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
         btnRetry = view.findViewById(R.id.btn_retry);
         txtConnection.setText("Connection Lost");
         btnRetry.setOnClickListener(v -> {
-            if (isNetworkAvailable()) {
+            if (homePresenter.isNetworkAvailable()) {
                 loaderView.setVisibility(VISIBLE);
                 hideNoInternetLayout();
                 Toast.makeText(getContext(), "Connection Lost", Toast.LENGTH_SHORT).show();
-                loadData();
+                homePresenter.loadData();
             }
         });
 
@@ -134,59 +130,11 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
         homePresenter = new HomePresenterImpl(this, mealRepository);
     }
 
-     public void setupNetworkCallback() {
-        ConnectivityManager connectivityManager = (ConnectivityManager)
-                requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        networkCallback = new ConnectivityManager.NetworkCallback() {
-            @Override
-            public void onAvailable(Network network) {
-                if (getActivity() == null) return;
-                getActivity().runOnUiThread(() -> {
-                    hideNoInternetLayout();
-                    loadData();
-                });
-            }
 
-            @Override
-            public void onLost(Network network) {
-                if (getActivity() == null) return;
-                Log.d(TAG, "Network lost, calling showNoInternetLayout");
-                getActivity().runOnUiThread(() -> {
-                    showNoInternetLayout();
-                });
-            }
-        };
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            connectivityManager.registerDefaultNetworkCallback(networkCallback);
-        }
-    }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager)
-                requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager != null) {
-            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-        }
-        return false;
-    }
-
-    private void loadData() {
-        if (isNetworkAvailable()) {
-            loaderView.setVisibility(VISIBLE);
-            txt_insp.setVisibility(GONE);
-            txt_cat.setVisibility(GONE);
-            txt_meal.setVisibility(GONE);
-            homePresenter.getMeals();
-            homePresenter.getCategories();
-        } else {
-            showNoInternetLayout();
-        }
-    }
-
-    private void showNoInternetLayout() {
+    public void showNoInternetLayout() {
         if (contentLayout != null && noInternetLayout != null) {
             Log.d(TAG, "Showing no internet layout");
             contentLayout.setVisibility(GONE);
@@ -194,7 +142,7 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
         }
     }
 
-    private void hideNoInternetLayout() {
+    public void hideNoInternetLayout() {
         if (contentLayout != null && noInternetLayout != null) {
             contentLayout.setVisibility(VISIBLE);
             noInternetLayout.setVisibility(GONE);
@@ -202,12 +150,14 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
     }
 
     @Override
+    public Context getViewContext() {
+        return requireContext();
+    }
+
+    @Override
     public void showAllMealsData(List<MealModel> models) {
-        if (!isAdded()) return;
-        loaderView.setVisibility(GONE);
-        txt_insp.setVisibility(VISIBLE);
-        txt_cat.setVisibility(VISIBLE);
-        txt_meal.setVisibility(VISIBLE);
+
+        hideLoading();
         mealAdapter.setMeals(models);
         mealOfDayAdapter.setMeals(models);
         mealAdapter.notifyDataSetChanged();
@@ -216,16 +166,16 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
 
     @Override
     public void showAllCategoryData(List<CategoryModel> categoryModels) {
-        if (!isAdded()) return;
+
         Log.d(TAG, "Categories received: " + categoryModels.size());
         categoryAdapter.setCategories(categoryModels);
     }
 
     @Override
     public void showErrorMsg(String err) {
-        if (!isAdded()) return;
+
         loaderView.setVisibility(GONE);
-        if (!isNetworkAvailable()) {
+        if (!homePresenter.isNetworkAvailable()) {
             showNoInternetLayout();
             return;
         }
@@ -235,6 +185,22 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
                 .setMessage(err)
                 .setPositiveButton("OK", null)
                 .show();
+    }
+
+    @Override
+    public void showLoading() {
+        loaderView.setVisibility(VISIBLE);
+        txt_insp.setVisibility(GONE);
+        txt_cat.setVisibility(GONE);
+        txt_meal.setVisibility(GONE);
+    }
+
+    @Override
+    public void hideLoading() {
+        loaderView.setVisibility(GONE);
+        txt_insp.setVisibility(VISIBLE);
+        txt_cat.setVisibility(VISIBLE);
+        txt_meal.setVisibility(VISIBLE);
     }
 
     @Override
@@ -263,16 +229,12 @@ public class HomeFragment extends Fragment implements HomeMealView, OnAddFavClic
     @Override
     public void onStart() {
         super.onStart();
-        setupNetworkCallback();
+        homePresenter.startNetworkMonitoring();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (networkCallback != null) {
-            ConnectivityManager connectivityManager = (ConnectivityManager)
-                    requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            connectivityManager.unregisterNetworkCallback(networkCallback);
-        }
+        homePresenter.stopNetworkMonitoring();
     }
 }

@@ -30,7 +30,7 @@ public class profileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
     private FirebaseAuth mAuth;
     private Button btnLogout;
-    private TextView name;
+    private TextView name,email;
     private View rootView;
 
     public profileFragment() {
@@ -56,11 +56,13 @@ public class profileFragment extends Fragment {
 
         btnLogout = view.findViewById(R.id.logout);
         name = view.findViewById(R.id.txt_profile);
+        email = view.findViewById(R.id.txt_email);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Log.i(TAG, "onViewCreated: " + currentUser.getUid()+"name"+currentUser.getDisplayName());
-            name.setText(currentUser.getEmail());
+            name.setText(currentUser.getDisplayName());
+            email.setText(currentUser.getEmail());
             Toast.makeText(getContext(),
                     currentUser.getEmail() + " id : " + currentUser.getUid(),
                     Toast.LENGTH_SHORT).show();

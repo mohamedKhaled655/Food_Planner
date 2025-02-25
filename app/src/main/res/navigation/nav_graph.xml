@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/LoginFragment"
-        android:name="com.example.mealsapp.login_fragment.LoginFragment"
+        android:name="com.example.mealsapp.login_fragment.view.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action

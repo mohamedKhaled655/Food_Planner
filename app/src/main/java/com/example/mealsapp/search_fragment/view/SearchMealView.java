@@ -12,4 +12,7 @@ public interface SearchMealView {
     public void showSearchByIngredient(List<IngredientModel> models);
 
     public void showErrorMsg(String err);
+
+    void showLoading();
+    void hideLoading();
 }
