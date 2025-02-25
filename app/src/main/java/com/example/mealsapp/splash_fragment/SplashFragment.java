@@ -1,4 +1,4 @@
-package com.example.mealsapp;
+package com.example.mealsapp.splash_fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,9 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.mealsapp.R;
 import com.example.mealsapp.data.local.MealLocalDataSourceImpl;
 import com.example.mealsapp.data.network.MealRemoteDataSourceImpl;
 import com.example.mealsapp.data.repo.MealRepository;

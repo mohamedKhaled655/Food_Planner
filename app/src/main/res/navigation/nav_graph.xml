@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.mealsapp.SplashFragment"
+        android:name="com.example.mealsapp.splash_fragment.SplashFragment"
         android:label="Splash Screen"
         tools:layout="@layout/fragment_splash">
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/welcomFragment"
-        android:name="com.example.mealsapp.WelcomFragment"
+        android:name="com.example.mealsapp.welcome_fragment.WelcomFragment"
         android:label="Start Screen"
         tools:layout="@layout/fragment_welcom">
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/LoginFragment"
-        android:name="com.example.mealsapp.LoginFragment"
+        android:name="com.example.mealsapp.login_fragment.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.mealsapp.SignUpFragment"
+        android:name="com.example.mealsapp.sign_up_fragment.SignUpFragment"
         android:label="Sign Up"
         tools:layout="@layout/fragment_sign_up">
         <action
@@ -100,7 +100,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.mealsapp.profileFragment"
+        android:name="com.example.mealsapp.profile_fragment.profileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action

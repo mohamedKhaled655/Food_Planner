@@ -5,6 +5,8 @@
     android:id="@+id/card_item_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:fitsSystemWindows="true"
     tools:context=".meals_fragment.view.MealsFragment">
 
     <ImageButton

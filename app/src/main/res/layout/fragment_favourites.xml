@@ -46,7 +46,7 @@
                 android:id="@+id/btnRestoreFavorites"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/cloud"
+                android:src="@drawable/cloud2"
                 android:backgroundTint="@color/white"
                 android:layout_marginHorizontal="8dp"
                 android:layout_gravity="end"

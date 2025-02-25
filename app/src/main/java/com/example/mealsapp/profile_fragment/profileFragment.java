@@ -1,4 +1,4 @@
-package com.example.mealsapp;
+package com.example.mealsapp.profile_fragment;
 
 import android.os.Bundle;
 
@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mealsapp.R;
 import com.example.mealsapp.data.local.MealLocalDataSourceImpl;
 import com.example.mealsapp.data.network.MealRemoteDataSourceImpl;
 import com.example.mealsapp.data.repo.MealRepository;

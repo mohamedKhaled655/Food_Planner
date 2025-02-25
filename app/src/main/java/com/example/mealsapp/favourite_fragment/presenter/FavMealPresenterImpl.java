@@ -35,7 +35,6 @@ public class FavMealPresenterImpl implements FavMealPresenter{
 
         repository.getStoredFavMeals()
                 .map(mealsList -> {
-
                     List<MealEntity> userFavMeals = new ArrayList<>();
                     for (MealEntity meal : mealsList) {
                         if (currentUserId.equals(meal.getUserId())) {
@@ -83,7 +82,7 @@ public class FavMealPresenterImpl implements FavMealPresenter{
     public void addMealFromFav(MealEntity meal) {
         meal.setUserId(getUserId());
         meal.setFavorite(true);
-      repository.addMealToFav(meal)
+        repository.addMealToFav(meal)
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(
@@ -132,7 +131,7 @@ public class FavMealPresenterImpl implements FavMealPresenter{
                         () -> {
                             if (favoriteMealView != null) {
                                 favoriteMealView.showMessage("Favorites restored successfully");
-                                // Refresh the view with restored favorites
+
                                 getFavMeals();
                             }
                         },

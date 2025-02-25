@@ -94,12 +94,18 @@ public class FavouritesFragment extends Fragment implements OnRemoveFavClickList
             favMealPresenter.getFavMeals();
             Toast.makeText(getContext(), "token :" + userId, Toast.LENGTH_SHORT).show();
 
-            btnBackupFavorites.setOnClickListener(v -> {
-                favMealPresenter.syncFavoritesToCloud();
+            btnBackupFavorites.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    favMealPresenter.syncFavoritesToCloud();
+                }
             });
 
-            btnRestoreFavorites.setOnClickListener(v -> {
-                favMealPresenter.restoreFavoritesFromCloud();
+            btnRestoreFavorites.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    favMealPresenter.restoreFavoritesFromCloud();
+                }
             });
         }
 

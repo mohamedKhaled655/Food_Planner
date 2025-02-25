@@ -1,4 +1,4 @@
-package com.example.mealsapp;
+package com.example.mealsapp.welcome_fragment;
 
 import android.os.Bundle;
 
@@ -10,8 +10,9 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.mealsapp.R;
 
 
 public class WelcomFragment extends Fragment {
