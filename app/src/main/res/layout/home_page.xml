@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="20dp"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -21,6 +22,7 @@
             android:id="@+id/imageView2"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:backgroundTint="@color/primary_color"
             app:srcCompat="@drawable/drawer" />
 
         <View
@@ -32,6 +34,7 @@
             android:id="@+id/imageView5"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:backgroundTint="@color/primary_color"
             app:srcCompat="@drawable/search" />
     </LinearLayout>
 
@@ -72,6 +75,8 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="24dp"
                     android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/primary_color"
                     android:text="@string/daily_inspiration"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -96,6 +101,8 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/primary_color"
                     android:text="@string/category"
                     app:layout_constraintTop_toBottomOf="@id/randomRecycler" />
 
@@ -119,6 +126,8 @@
                     android:layout_marginEnd="8dp"
                     android:textStyle="bold"
                     android:text="Meals :"
+                    android:textColor="@color/primary_color"
+                    android:textSize="18sp"
                     app:layout_constraintTop_toBottomOf="@id/re_category" />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_gride_items"

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -128,6 +129,7 @@ public class CustomMealAdapter extends  RecyclerView.Adapter<CustomMealAdapter.C
     private void updateFavButton(ImageButton btnImgFav, boolean isFavorite) {
         if (isFavorite) {
             btnImgFav.setBackgroundResource(R.drawable.circle);
+
         } else {
             btnImgFav.setBackgroundResource(R.drawable.circle_background);
         }

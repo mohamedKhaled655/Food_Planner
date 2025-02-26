@@ -3,6 +3,7 @@
     <color name="primary_color">#BBBD4C0A</color>
     <color name="primary_ripple">#9ABD4C0A</color>
     <color name="secondary_color">#F2FF9D23</color>
+    <color name="card_color">#cbf3f0</color>
     <color name="thred_color">#E7DECC</color>
     <color name="error_color">#740006</color>
     <color name="background_color">#FEF9E1</color>
